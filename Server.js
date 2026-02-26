@@ -4,15 +4,24 @@ const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
-const app = express();
-const PORT = 3000;
 
-// Use the cors middleware to handle CORS
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
 app.use(cors());
-app.use(express.json()); // Enables express to parse JSON bodies
+app.use(express.json());
+
+// Serve files from /public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+// ✅ Homepage route (THIS FIXES "Cannot GET /")
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'Interactive Office Map.html'));
+});
+
 const tokenEndpoint = "https://login.microsoftonline.com/ac1f7d2b-c741-43f6-9893-d39b22c46953/oauth2/v2.0/token";
+
 const params = new URLSearchParams();
 params.append('client_id', process.env.CLIENT_ID);
 params.append('scope', 'https://graph.microsoft.com/.default');
@@ -22,10 +31,10 @@ params.append('grant_type', 'client_credentials');
 app.get('/getAccessToken', async (req, res) => {
     try {
         const response = await axios.post(tokenEndpoint, params);
-        console.log("Access Token:", response.data.access_token); // Log the access token for inspection
+        console.log("Access Token:", response.data.access_token);
         res.json({ accessToken: response.data.access_token });
     } catch (error) {
-        console.error('Error fetching access token:', error.response.data);
+        console.error('Error fetching access token:', error.response?.data || error.message);
         res.status(500).json({ error: 'Failed to obtain access token' });
     }
 });
