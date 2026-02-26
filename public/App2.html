@@ -74,7 +74,7 @@
 
 <svg viewBox="0 0 2304 1512" preserveAspectRatio="xMidYMid meet" width="100%" height="100%">
 
-<image width="100%" height="100%" xlink:href="office map3.png"></image>
+<image width="100%" height="100%" href="Office%20Map3.png"></image>
 
 <!-- Blue Section API result-->
 
@@ -533,10 +533,16 @@
 
 
 <script>
-    async function fetchOfficeInfo() {
-        try {
-            const response = await fetch('http://localhost:3000/checkCalendar');
-            const data = await response.json();
+async function fetchOfficeInfo() {
+    try {
+        // Use localhost when opened as a file, otherwise use same host (Render)
+        const apiBase =
+            window.location.protocol === 'file:'
+                ? 'http://localhost:3000'
+                : '';
+
+        const response = await fetch(`${apiBase}/checkCalendar`);
+        const data = await response.json();
 
             const rectElement202 = document.getElementById('result202'); // For ric_202@eab.com
 			const rectElement203 = document.getElementById('result203'); // For ric_203@eab.com
@@ -819,7 +825,6 @@
 	// Set an interval to call the function every 5 minutes
 setInterval(fetchOfficeInfo, 5 * 60 * 1000); // 5 minutes in milliseconds
 
-</script>
 </script>
 </body>
 </html>
