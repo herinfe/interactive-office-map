@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flex 203</title>
+ <style>
+        /* Root Variables for Consistency and Easy Maintenance */
+        :root {
+            --primary-color: #007bff;
+            --hover-color: #0056b3;
+            --text-color: #333;
+            --input-background: #fff;
+            --input-border-color: #ccc;
+            --font-size-normal: 12px;
+            --font-size-label: 12px;
+            --border-radius: 20px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+            position: relative;
+            background-color: #f4f4f4; /* Updated Background Color */
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .calendar-container {
+            position: absolute;
+            bottom: -610px;
+            left: 20px;
+            width: 1150px;
+            height: 600px;
+            border: 1px solid #ccc;
+            resize: both;
+            overflow: hidden;
+        }
+
+        #outlook-calendar {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Enhanced Form Styles */
+        #bookingForm {
+            background-color: var(--input-background);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 300px; /* Reduced width for smaller form */
+            position: absolute; /* Adjusted positioning */
+            top: 70px;
+            left: 20px;
+            z-index: 2; /* Ensure form is above other elements if needed */
+        }
+
+        #bookingForm label {
+            display: block;
+            color: var(--text-color);
+            margin-bottom: 5px;
+            font-size: var(--font-size-label);
+        }
+
+        #bookingForm input[type="text"],
+        #bookingForm input[type="date"],
+        #bookingForm input[type="time"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--input-border-color);
+            font-size: var(--font-size-normal);
+            background-color: var(--input-background);
+        }
+
+        #bookingForm button[type="submit"] {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 10px 10px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: var(--font-size-normal);
+            display: block;
+            width: 100%;
+        }
+
+        #bookingForm input[type="text"]:focus,
+        #bookingForm input[type="date"]:focus,
+        #bookingForm input[type="time"]:focus,
+        #bookingForm button[type="submit"]:hover {
+            border-color: var(--hover-color);
+            background-color: #e7e7e7; /* Subtle background change on focus */
+        }
+
+        #bookingForm button[type="submit"]:hover {
+            background-color: var(--hover-color);
+        }
+
+        @media (max-width: 600px) {
+            #bookingForm {
+                width: 80%; /* More responsive on smaller screens */
+                left: 10%; /* Centered on smaller screens */
+                top: 60px; /* Adjust if needed for better visibility */
+            }
+        }
+    </style>
+</head>
+<body>
+    <a class="back-button" href="javascript:history.back()">Back</a>
+    <!-- Wrap form within a div with class form-container -->
+    <div class="form-container">
+        <form id="bookingForm">
+            <label for="meetingSubject">Subject:</label>
+            <input type="text" id="meetingSubject" name="meetingSubject" required><br><br>
+            <label for="meetingDate">Date:</label>
+            <input type="date" id="meetingDate" name="meetingDate" required><br><br>
+            <label for="startTime">Start Time:</label>
+            <input type="time" id="startTime" name="startTime" required><br><br>
+            <label for="endTime">End Time:</label>
+            <input type="time" id="endTime" name="endTime" required><br><br>
+            <button type="submit">Book Room</button>
+        </form>
+    </div>
+<body>
+    <img src="Flex 203.jpg">
+    <div class="calendar-container">
+        <iframe id="outlook-calendar" src="https://outlook.office365.com/owa/calendar/ef8c285aab8e4b0b8131890ffdd84842@eab.com/6be6953943f34c68aae7422ad1dd142812343756608533363332/calendar.html" frameborder="0" scrolling="no"></iframe>
+    </div>
+	 </div>
+    <script>
+        document.getElementById('bookingForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
+
+            const formData = {
+                userEmail: 'ric_203@eab.com', // Email for the room where the event will be created
+                subject: document.getElementById('meetingSubject').value,
+                start: document.getElementById('meetingDate').value + "T" + document.getElementById('startTime').value + ":00",
+                end: document.getElementById('meetingDate').value + "T" + document.getElementById('endTime').value + ":00",
+                attendees: [] // This can be populated with attendee emails if necessary
+            };
+
+            fetch('http://localhost:3000/createEvent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                alert("Event booked successfully!");
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert("Failed to book the event.");
+            });
+        });
+    </script>
+</body>
+</html>
+
+</body>
+</html>
+ 

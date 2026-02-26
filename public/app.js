@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Interactive Office Map</title>
+	
+<!-- Side Panel -->
+	
+  <style>
+ body {
+  font-family: "Lato", Roboto;
+}
+
+.sidepanel  {
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  height: 250px;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidepanel a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidepanel a:hover {
+  color: #f1f1f1;
+}
+
+.sidepanel .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+}
+
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color:#444;
+}
+  </style>
+</head>
+<body>
+
+<div id="Sidepanel" class="sidepanel">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+  <a href="#" onclick="fetchOfficeInfo(); return false;">Fetch Office Info</a>
+  <a href="Flex Office Info.html">Flex Office</a>
+  <a href="Huddle Room Info.html">Huddle Rooms</a>
+  <a href="Zoom Studio Info.html">Zoom Studio</a>
+  <a href="Conference Rooms Info.html">Conference Rooms</a>
+</div>
+
+<button class="openbtn" onclick="openNav()">☰ Room Info</button>
+
+<!--For displaying API result -->
+<div id="result"></div>
+
+<svg viewBox="0 0 2304 1512" preserveAspectRatio="xMidYMid meet" width="100%" height="100%">
+  <style>
+    .clickable-rect {
+      fill: #000000;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    
+    .clickable-rect:hover {
+      opacity: 0.5;
+    }
+	
+	<!-- Blue Section Color -->
+	
+	.blue-section .clickable-rect:hover {
+      fill: #0000ff; 
+      opacity: 0.5;
+	  }
+	  
+	 <!-- Orange Section Color -->
+	 .orange-section .clickable-rect:hover {
+      fill: #FFA500; 
+      opacity: 0.5;
+	  }
+	  
+	  <!-- Teal Section Color -->
+	 .teal-section .clickable-rect:hover {
+      fill: #008080; 
+      opacity: 0.5;
+	  }
+	  
+	  <!-- Yellow Section Color -->
+	 .yellow-section .clickable-rect:hover {
+      fill: #FFFF00; 
+      opacity: 0.5;
+	  }
+	  
+	  <!-- Grey Section Color -->
+	 .grey-section .clickable-rect:hover {
+      fill: #525252; 
+      opacity: 0.5;
+	  }
+	  
+  </style>
+  
+  <image width="100%" height="100%" xlink:href="office map3.png"></image>
+  
+  <!-- Blue Section -->
+	
+ <a	xLink:href="Huddle 202 test.html" class="blue-section">
+	<rect class="clickable-rect" x="1265" y="574" width="61" height="71"></rect>
+	<title>Huddle 202</title> 
+	</a>
+	
+	<a	xLink:href="Flex 203.html" class="blue-section">
+	<rect class="clickable-rect" x="1330" y="574" width="65" height="71"></rect>
+	<title>Flex 203</title> 
+	</a>
+	
+	<a	xLink:href="Studio 204.html" class="blue-section">
+	<rect class="clickable-rect" x="1399" y="574" width="63" height="71"></rect>
+	<title>Studio 204</title> 
+	</a>
+	
+	<a	xLink:href="Swift Creek 211.html" class="blue-section">
+	<rect class="clickable-rect" x="1661" y="728" width="150" height="95"></rect>
+	<title>Swift Creek 211</title> 
+	</a>
+	
+	<a	xLink:href="Flex 212.html" class="blue-section">
+	<rect class="clickable-rect" x="1815" y="718" width="66" height="72"></rect>
+	<title>Flex 212</title> 
+	</a>
+	
+	<a	xLink:href="Flex 213.html" class="blue-section">
+	<rect class="clickable-rect" x="1815" y="794" width="66" height="69"></rect>
+	<title>Flex 213</title> 
+	</a>
+	
+	<a	xLink:href="Blue Section.html" class="blue-section">
+	<polygon class="clickable-rect" points="1891,870,2127,870,2125,491,1808,491,1807,407,1772,407,1772,391,1782,390,1781,223,1304,222,1300,554,1825,554,1825,706,1891,707"></polygon>
+	<title>Blue Section</title> 
+	</a>
+	
+<!-- Orange Section -->
+
+	<a	xLink:href="Flex 214.html" class="orange-section">
+	<rect class="clickable-rect" x="1815" y="867" width="66" height="73"></rect>
+	<title>Flex 214</title> 
+	</a>
+	
+	<a	xLink:href="Cardinal 215.html" class="orange-section">
+	<polygon class="clickable-rect" points="1811,827,1614,827,1614,935,1772,935,1772,906,1811,906"></polygon>
+	<title>Cardinal 215</title> 
+	</a>
+	
+	<a	xLink:href="Open Collab 216.html" class="orange-section">
+	<rect class="clickable-rect" x="1670" y="979" width="159" height="72"></rect>
+	<title>Open Collab 216</title> 
+	</a>
+	
+	<a	xLink:href="Bluebird 217.html" class="orange-section">
+	<rect class="clickable-rect" x="1923" y="1169" width="209" height="98"></rect>
+	<title>Bluebird 217</title> 
+	</a>
+	
+	<a	xLink:href="Phone 218.html" class="orange-section">
+	<rect class="clickable-rect" x="1777" y="1055" width="52" height="34"></rect>
+	<title>Phone 218</title> 
+	</a>
+	
+	<a	xLink:href="Phone 219.html" class="orange-section">
+	<rect class="clickable-rect" x="1725" y="1055" width="48" height="34"></rect>
+	<title>Phone 219</title> 
+	</a>
+	
+	<a	xLink:href="Phone 220.html" class="orange-section">
+	<rect class="clickable-rect" x="1670" y="1055" width="51" height="34"></rect>
+	<title>Huddle 220</title> 
+	</a>
+	
+	<a	xLink:href="Flex 221.html" class="orange-section">
+	<rect class="clickable-rect" x="1551" y="1002" width="64" height="74"></rect>
+	<title>Flex 221</title> 
+	</a>
+	
+	<a	xLink:href="Flex 229.html" class="orange-section">
+	<rect class="clickable-rect" x="1179" y="1265" width="72" height="64"></rect>
+	<title>Flex 229</title> 
+	</a>
+	
+	<a	xLink:href="Orange Section.html" class="orange-section">
+	<polygon class="clickable-rect" points="1890,873,2128,875,2128,1164,1786,1162,1784,1437,1272,1437,1270,1101,1839,1101,1839,950,1890,950,1890,906"></polygon>
+	<title>Orange Section</title> 
+	</a>
+	
+<!--Teal Section -->
+
+	<a	xLink:href="Studio 231.html" class="teal-section">
+	<rect class="clickable-rect" x="1103" y="1265" width="72" height="64"></rect>
+	<title>Studio 231</title>
+	</a>
+	
+	<a	xLink:href="Flex 232.html" class="teal-section">
+	<rect class="clickable-rect" x="1103" y="1127" width="72" height="65"></rect>
+	<title>Flex 232</title>
+	</a>
+	
+	<a	xLink:href="Dogwood 239.html" class="teal-section">
+	<polygon class="clickable-rect" points="566,827,684,827,684,872,753,874,753,941,568,941"></polygon>
+	<title>Dogwood 239</title>
+	</a>
+	
+	<a	xLink:href="Open Collab 240.html" class="teal-section">
+	<rect class="clickable-rect" x="616" y="981" width="137" height="96"></rect>
+	<title>Open Collab 240</title>
+	</a>
+	
+	<a	xLink:href="Magnolia 241.html" class="teal-section">
+	<rect class="clickable-rect" x="354" y="1169" width="80" height="98"></rect>
+	<title>Magnolia 241</title>
+	</a>
+	
+	<a	xLink:href="Willow 242.html" class="teal-section">
+	<rect class="clickable-rect" x="227" y="1169" width="123" height="98"></rect>
+	<title>Willow 242</title>
+	</a>
+	
+	<a	xLink:href="Flex 243.html" class="teal-section">
+	<rect class="clickable-rect" x="499" y="1054" width="64" height="72"></rect>
+	<title>Flex 243</title>
+	</a>
+	
+	<a	xLink:href="Flex 244.html" class="teal-section">
+	<rect class="clickable-rect" x="499" y="978" width="64" height="72"></rect>
+	<title>Flex 244</title>
+	</a>
+	
+	<a	xLink:href="Flex 245.html" class="teal-section">
+	<rect class="clickable-rect" x="499" y="864" width="64" height="70"></rect>
+	<title>Flex 245</title>
+	</a>
+	
+	<a	xLink:href="Studio 246.html" class="teal-section">
+	<rect class="clickable-rect" x="499" y="790" width="64" height="70"></rect>
+	<title>Studio 246</title>
+	</a>
+	
+	<a	xLink:href="Teal Section.html" class="teal-section">
+	<polygon class="clickable-rect" points="578,1140,487,1140,487,776,225,776,227,1158,532,1158,530,1262,574,1262,574,1437,1089,1437,1085,1093,790,1093,578,1093"></polygon>
+	<title>Teal Section</title>
+	</a>
+	
+<!--Yellow Section -->
+
+<a	xLink:href="Azalea 201.html" class="yellow-section">
+	<rect class="clickable-rect" x="1099" y="214" width="161" height="173"></rect>
+	<title>Azalea 201</title>
+	</a>
+	
+	<a	xLink:href="Flex 247.html" class="yellow-section">
+	<rect class="clickable-rect" x="499" y="715" width="64" height="71"></rect>
+	<title>Flex 247</title>
+	</a>
+	
+	<a	xLink:href="Flex 248.html" class="yellow-section">
+	<rect class="clickable-rect" x="499" y="600" width="64" height="71"></rect>
+	<title>Flex 248</title>
+	</a>
+	
+	<a	xLink:href="Flex 249.html" class="yellow-section">
+	<rect class="clickable-rect" x="499" y="524" width="64" height="72"></rect>
+	<title>Flex 249</title>
+	</a>
+	
+	<a	xLink:href="Flex 257.html" class="yellow-section">
+	<rect class="clickable-rect" x="894" y="576" width="65" height="68"></rect>
+	<title>Flex 257</title>
+	</a>
+	
+	<a	xLink:href="Flex 258.html" class="yellow-section">
+	<rect class="clickable-rect" x="963" y="576" width="64" height="68"></rect>
+	<title>Flex 258</title>
+	</a>
+	
+	<a	xLink:href="Huddle 259.html" class="yellow-section">
+	<rect class="clickable-rect" x="1031" y="576" width="64" height="68"></rect>
+	<title>Huddle 259</title>
+	</a>
+	
+	<a	xLink:href="Yellow Section.html" class="yellow-section">
+	<polygon class="clickable-rect" points="492,773,227,775,227,488,570,485,574,216,1096,216,1096,551,574,551,574,516,492,516"></polygon>
+	<title>Yellow Section</title>
+	</a>
+	
+<!-- Grey Section -->
+
+	<a	xLink:href="Common Room 200.html" class="grey-section">
+	<rect class="clickable-rect" x="1099" y="433" width="163" height="222"></rect>
+	<title>Common Room 200</title>
+	</a>
+	
+	<a	xLink:href="Pantry 261.html" class="grey-section">
+	<rect class="clickable-rect" x="1002" y="709" width="90" height="140"></rect>
+	<title>Pantry 261</title>
+	</a>
+	
+	<a	xLink:href="Tech Stop 228.html" class="grey-section">
+	<rect class="clickable-rect" x="1103" y="1196" width="148" height="64"></rect>
+	<title>Tech Stop 228</title>
+	</a>
+	
+	<a	xLink:href="Lounge 230.html" class="grey-section">
+	<rect class="clickable-rect" x="1099" y="1333" width="158" height="102"></rect>
+	<title>Lounge 230</title>
+	</a>
+	
+</svg>
+
+<script>
+  function openNav() {
+    document.getElementById("Sidepanel").style.width = "250px";
+  }
+
+  function closeNav() {
+    document.getElementById("Sidepanel").style.width = "0";
+  }
+  
+  async function fetchOfficeInfo() {
+    try {
+        const response = await fetch('http://localhost:3000/checkCalendar');
+        const data = await response.json();
+
+        if (data.isBusy) {
+            document.getElementById('result').innerText = 'ric_211@eab.com is currently busy.';
+        } else {
+            document.getElementById('result').innerText = 'ric_211@eab.com is currently free.';
+        }
+    } catch (error) {
+        console.error('Failed to check calendar status:', error);
+        document.getElementById('result').innerText = 'Failed to check calendar status.';
+    }
+}
+
+</script>
+</body>
+</html>

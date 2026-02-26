@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Interactive Office Map</title>
+ <script type='text/javascript' src='jquery-3.6.4.min.js'></script>
+		<script type='text/javascript' src='jquery.maphilight.js'></script>
+		<script type='text/javascript'>
+			jQuery(function() {
+				jQuery('.Office-Map').maphilight();
+			});
+</script>
+</head>
+<body>
+
+	<!-- Side Panel -->
+
+<style>
+body {
+  font-family: "Lato", Roboto;
+}
+
+.sidepanel  {
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  height: 250px;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidepanel a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidepanel a:hover {
+  color: #f1f1f1;
+}
+
+.sidepanel .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+}
+
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color:#444;
+}
+</style>
+<body>
+
+<div id="Sidepanel" class="sidepanel">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+  <a href="Flex Office Info.html">Flex Office</a>
+  <a href="Huddle Room Info.html">Huddle Rooms</a>
+  <a href="Zoom Studio Info.html">Zoom Studio</a>
+  <a href="Conference Rooms Info.html">Conference Rooms</a>
+</div>
+
+<button class="openbtn" onclick="openNav()">☰ Room Info</button>  
+
+<script>
+function openNav() {
+  document.getElementById("Sidepanel").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("Sidepanel").style.width = "0";
+}
+</script>
+
+	<img src="Office Map3.png" Class="Office-Map" alt="Office Map" width="1000" height="680" usemap="#office-map">
+	<map name="office-map">
+		
+	<!-- Blue Section -->
+		<area target="_self" alt="Huddle 202" title="Huddle 202" href="Huddle 202.html" coords="552,250,578,281" shape="rect">
+		<area target="_self" alt="Flex Office 203" title="Flex Office 203" href="Flex 203.html" coords="578,247,604,278" shape="rect">
+		<area target="_self" alt="Virtual Studio 204" title="Virtual Studio 204" href="Studio 204.html" coords="607,247,633,278" shape="rect">
+		<area target="_self" alt="Flex Office 205" title="Flex Office 205" href="Flex 205.html" coords="637,248,663,279" shape="rect">
+		<area target="_self" alt="Flex Office 206" title="Al Newell Office" href="Flex 206.html" coords="667,248,693,279" shape="rect">
+		<area target="_self" alt="Open Collab 207" title="Open Collab 252" href="Open Collab 207.jpg" coords="717,241,718,288,785,290,788,265,767,265,769,240" shape="poly">
+		<area target="_self" alt="Potomac 208" title="Potomac 208" href="Potomac 208.jpg" coords="837,167,870,208" shape="rect">
+		<area target="_self" alt="Rappahannock 209" title="Rappahannock 209" href="Rappahannock 209.jpg" coords="871,167,924,209" shape="rect">
+		<area target="_self" alt="Phone Room 210" title="Phone Room 210" href="Phone Room 210.jpg" coords="771,242,786,262" shape="rect">
+		<area target="_self" alt="Swift Creek 211" title="Swift Creek 211" href="Swift Creek 211.jpg" coords="723,315,785,357" shape="rect">
+		<area target="_self" alt="Flex Office 212" title="Flex Office 212" href="Flex Office 212.jpg" coords="789,312,817,342" shape="rect">
+		<area target="_self" alt="Flex Office 213" title="Flex Office 213" href="Flex Office 213.jpg" coords="787,345,817,373" shape="rect">
+		<area target="_self" alt="Blue Section" title="Blue Section" href="Blue Section.jpg" coords="562,98,773,233" shape="rect">
+		
+	<!-- Orange Section -->
+		<area target="_self" alt="Flex Office 214" title="Flex Office 214" href="Flex Office 214.jpg" coords="788,377,817,408" shape="rect">
+		<area target="_self" alt="Cardinal 215" title="Cardinal 215" href="Cardinal 215.jpg" coords="700,359,702,404,770,408,770,391,785,392,785,358" shape="poly">
+		<area target="_self" alt="Open Collab 216" title="Open Collab 216" href="Open Collab 216.jpg" coords="723,426,796,456" shape="rect">
+		<area target="_self" alt="Bluebird 217" title="Bluebird 217" href="Bluebird 217.jpg" coords="837,508,926,548" shape="rect">
+		<area target="_self" alt="Phone Room 218" title="Phone Room 218" href="Phone Room 218.jpg" coords="770,456,796,473" shape="rect">
+		<area target="_self" alt="Phone Room 219" title="Phone Room 219" href="Phone Room 219.jpg" coords="749,457,771,473" shape="rect">
+		<area target="_self" alt="Phone Room 220" title="Phone Room 220" href="Phone Room 220.jpg" coords="726,457,747,474" shape="rect">
+		<area target="_self" alt="Flex Office 221" title="Flex Office 221" href="Flex Office 221.jpg" coords="672,436,702,467" shape="rect">
+		<area target="_self" alt="Flex Office 222" title="Flex Office 222" href="Flex Office 222.jpg" coords="643,435,673,466" shape="rect">
+		<area target="_self" alt="Virtual Studio 223" title="Virtual Studio 223" href="Virtual Studio 223.jpg" coords="613,434,643,465" shape="rect">
+		<area target="_self" alt="Flex Office 224" title="Flex Office 224" href="Flex Office 224.jpg" coords="586,436,612,465" shape="rect">
+		<area target="_self" alt="Flex Office 225" title="Flex Office 225" href="Flex Office 225.jpg" coords="556,436,582,465" shape="rect">
+		<area target="_self" alt="Huddle 226" title="Huddle 226" href="Huddle 226.jpg" coords="528,436,552,466" shape="rect">
+		<area target="_self" alt="Virtual Studio 227" title="Virtual Studio 227" href="Virtual Studio 227.jpg" coords="512,489,541,516" shape="rect">
+		<area target="_self" alt="Flex Office 229" title="Flex Office 229" href="Flex Office 229.jpg" coords="513,548,542,575" shape="rect">
+		<area target="_self" alt="Orange Section" title="Orange Section" href="Orange Section.jpg" coords="555,482,774,616" shape="rect">
+		
+	<!-- Teal Section -->
+		<area target="_self" alt="Virtual Studio 231" title="Virtual Studio 231" href="Virtual Studio 231.jpg" coords="479,548,509,578" shape="rect">
+		<area target="_self" alt="Flex Office 232" title="Flex Office 232" href="Flex Office 232.jpg" coords="480,488,510,518" shape="rect">
+		<area target="_self" alt="Huddle 233" title="Huddle 233" href="Huddle 233.jpg" coords="466,434,498,467" shape="rect">
+		<area target="_self" alt="Flex Office 234" title="Flex Office 234" href="Flex Office 234.jpg" coords="440,436,467,468" shape="rect">
+		<area target="_self" alt="Virtual Studio 235" title="Virtual Studio 235" href="Virtual Studio 235.jpg" coords="407,437,437,467" shape="rect">
+		<area target="_self" alt="Flex Office 236" title="Flex Office 236" href="Flex Office 236.jpg" coords="381,436,407,465" shape="rect">
+		<area target="_self" alt="Flex Office 237" title="Flex Office 237" href="Flex Office 237.jpg" coords="352,437,378,466" shape="rect">
+		<area target="_self" alt="Copy Room 238" title="Copy Room 238" href="Copy Room 238.jpg" coords="299,334,322,376" shape="rect">
+		<area target="_self" alt="Dogwood 239" title="Dogwood 239" href="Dogwood 239.jpg" coords="247,361,247,407,327,409,328,379,295,379,295,361" shape="poly">
+		<area target="_self" alt="Open Collab 240" title="Open Collab 240" href="Open Collab 240.jpg" coords="267,425,329,467" shape="rect">
+		<area target="_self" alt="Magnolia 241" title="Magnolia 241" href="Magnolia 241.jpg" coords="155,508,187,550" shape="rect">
+		<area target="_self" alt="Willow 242" title="Willow 242" href="Willow 242.jpg" coords="99,506,150,548" shape="rect">
+		<area target="_self" alt="Flex Office 243" title="Flex Office 243" href="Flex Office 243.jpg" coords="217,457,244,489" shape="rect">
+		<area target="_self" alt="Flex Office 244" title="Flex Office 244" href="Flex Office 244.jpg" coords="217,424,244,455" shape="rect">
+		<area target="_self" alt="Flex Office 245" title="Flex Office 245" href="Flex Office 245.jpg" coords="216,375,244,405" shape="rect">
+		<area target="_self" alt="Virtual Studio 246" title="Virtual Studio 246" href="Virtual Studio 246.jpg" coords="216,344,244,373" shape="rect">
+		<area target="_self" alt="Teal Section" title="Teal Section" href="Teal Section.jpg" coords="253,477,475,620" shape="rect">
+		
+	<!-- Yellow Section -->
+		<area target="_self" alt="Azalea 201" title="Azalea 201" href="Azalea 201.jpg" coords="476,94,548,167" shape="rect">
+		<area target="_self" alt="Flex Office 247" title="Flex Office 247" href="Flex Office 247.jpg" coords="218,311,243,342" shape="rect">
+		<area target="_self" alt="Flex Office 248" title="Flex Office 248" href="Flex Office 248.jpg" coords="216,260,244,291" shape="rect">
+		<area target="_self" alt="Flex Office 249" title="Flex Office 249" href="Flex Office 249.jpg" coords="215,227,244,259" shape="rect">
+		<area target="_self" alt="Iris 250" title="Iris 250" href="Iris 250.jpg" coords="98,169,188,211" shape="rect">
+		<area target="_self" alt="Phone Room 251" title="Phone Room 251" href="Phone Room 251.jpg" coords="267,244,285,260" shape="rect">
+		<area target="_self" alt="Open Collab 252" title="Open Collab 252" href="Open Collab 252.jpg" coords="326,243,326,285,267,285,267,263,289,262,290,242" shape="poly">
+		<area target="_self" alt="Tulip 253" title="Tulip 253" href="Tulip 253.jpg" coords="244,308,296,357" shape="rect">
+		<area target="_self" alt="Lactation Room" title="Lactation Room" href="Under Construction.jpg" coords="298,308,322,332" shape="rect">
+		<area target="_self" alt="Wellness Room 255" title="Wellness Room 255" href="Wellness Room 255.jpg" coords="341,251,356,284" shape="rect">
+		<area target="_self" alt="Virtual Studio 256" title="Virtual Studio 256" href="Virtual Studio 256.jpg" coords="357,247,386,282" shape="rect">
+		<area target="_self" alt="Flex Office 257" title="Flex Office 257" href="Flex Office 257.jpg" coords="388,247,417,282" shape="rect">
+		<area target="_self" alt="Flex Office 258" title="Flex Office 258" href="Flex Office 258.jpg" coords="418,250,448,280" shape="rect">
+		<area target="_self" alt="Huddle 259" title="Huddle 259" href="Huddle 259.jpg" coords="445,249,475,280" shape="rect">
+		<area target="_self" alt="Yellow Section" title="Yellow Section" href="Yellow Section.jpg" coords="250,92,469,239" shape="rect">	
+		
+	<!-- Grey Section -->
+		<area target="_self" alt="Common Room 200" title="Common Room 200" href="Common Room 200.jpg" coords="476,188,546,276" shape="rect">
+		<area target="_self" alt="Pantry 261" title="Pantry 261" href="Pantry 261.jpg" coords="434,308,474,367" shape="rect">
+		<area target="_self" alt="Tech Stop/Mail Room 228" title="Tech Stop/Mail Room 228" href="Tech Stop/Mail Room 228.jpg" coords="478,517,543,545" shape="rect">
+		<area target="_self" alt="Lounge 230" title="Lounge 230" href="Lounge 230.jpg" coords="475,578,547,623" shape="rect">
+	</map>
+</body>
+</html>

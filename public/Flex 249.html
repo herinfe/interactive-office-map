@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flex 249</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+            position: relative; /* Make the body a positioning context for absolute positioning */
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+
+        img {
+            max-width: 100%; /* Adjust the width as needed */
+            height: auto;
+            display: block; /* Add this to center the image */
+        }
+
+        /* Style the container for the calendar */
+        .calendar-container {
+            position: absolute;
+            bottom: -610px; /* Adjust the bottom position as needed */
+            left: 20px; /* Adjust the left position as needed */
+            width: 1150px; /* Adjust the initial width as needed */
+            height: 600px; /* Adjust the initial height as needed */
+            border: 1px solid #ccc; /* Add a border around the calendar box */
+            resize: both; /* Enable resizing */
+            overflow: hidden; /* Allow content to be scrolled if needed */
+        }
+
+        /* Style the iframe inside the calendar container */
+        #outlook-calendar {
+            width: 100%; /* Adjust the width as needed */
+            height: 100%; /* Adjust the height as needed */
+            border: none; /* Remove iframe border */
+        }
+    </style>
+</head>
+<body>
+    <a class="back-button" href="javascript:history.back()">Back</a>
+    <img src="Flex 249.jpg">
+    <div class="calendar-container">
+        <iframe id="outlook-calendar" src="https://outlook.office365.com/owa/calendar/edcd561cc17546319fab089c04f63bc3@eab.com/5a50f208ec3145ea8539395f712bf1a512302277398346859959/calendar.html" frameborder="0" scrolling="no"></iframe>
+    </div>
+</body>
+</html>
+ 
