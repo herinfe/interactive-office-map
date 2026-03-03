@@ -49,19 +49,26 @@
     .openbtn {
       position: fixed;
       z-index: 3;
-      top: 10px;
-      left: 10px;
-
-      font-size: 20px;
+      top: 1vw;
+      left: 1vw;
+      font-size: clamp(11px, 1.4vw, 20px);
       cursor: pointer;
-      background-color: #111;
+      background: rgba(17, 17, 17, 0.85);
       color: white;
-      padding: 10px 15px;
-      border: none;
+      padding: clamp(5px, 0.7vw, 10px) clamp(7px, 1vw, 15px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: clamp(4px, 0.6vw, 10px);
+      display: flex;
+      align-items: center;
+      gap: clamp(4px, 0.5vw, 8px);
+      letter-spacing: 0.02em;
+      transition: background 0.2s ease, border-color 0.2s ease;
+      font-family: "Lato", sans-serif;
     }
 
     .openbtn:hover {
-      background-color: #444;
+      background: rgba(60, 60, 60, 0.92);
+      border-color: rgba(255,255,255,0.3);
     }
 
     html, body {
@@ -70,72 +77,200 @@
       overflow: hidden;
     }
 
-#mapWrap {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
+    #mapWrap {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
 
-#officeMap {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
+    #officeMap {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
 
     .clickableRect {
       fill: #000000;
       opacity: 0;
-      transition: opacity 0.5s ease;
+      transition: opacity 0.3s ease;
     }
 
     .clickableRect:hover {
       opacity: 0.5;
     }
 
-    /* Section hover colors */
-    .blueSection .clickableRect:hover {
-      fill: #0000ff;
-      opacity: 0.5;
+    .blueSection .clickableRect:hover { fill: #0000ff; opacity: 0.5; }
+    .orangeSection .clickableRect:hover { fill: #FFA500; opacity: 0.5; }
+    .tealSection .clickableRect:hover { fill: #008080; opacity: 0.5; }
+    .yellowSection .clickableRect:hover { fill: #FFFF00; opacity: 0.5; }
+    .greySection .clickableRect:hover { fill: #525252; opacity: 0.5; }
+
+    #tooltip {
+      position: fixed;
+      background: rgba(17, 17, 17, 0.92);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: "Lato", sans-serif;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      z-index: 10;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     }
 
-    .orangeSection .clickableRect:hover {
-      fill: #FFA500;
-      opacity: 0.5;
+    #tooltip.visible {
+      opacity: 1;
     }
 
-    .tealSection .clickableRect:hover {
-      fill: #008080;
-      opacity: 0.5;
+    #tooltip-status {
+      font-size: 12px;
+      margin-top: 3px;
     }
 
-    .yellowSection .clickableRect:hover {
-      fill: #FFFF00;
-      opacity: 0.5;
+    .status-available { color: #32CD32; }
+    .status-booked { color: #ff4444; }
+    .status-unknown { color: #aaaaaa; }
+
+    #loadingIndicator {
+      position: fixed;
+      z-index: 5;
+      top: 1vw;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(17, 17, 17, 0.85);
+      color: white;
+      font-size: clamp(9px, 1.1vw, 14px);
+      padding: clamp(4px, 0.6vw, 8px) clamp(8px, 1vw, 14px);
+      border-radius: clamp(4px, 0.6vw, 8px);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
     }
 
-.greySection .clickableRect:hover {
-  fill: #525252;
-  opacity: 0.5;
-}
+    #loadingIndicator.visible {
+      opacity: 1;
+    }
 
-#zoomUi {
-  position: fixed;
-  z-index: 4;
-  right: 10px;
-  bottom: 10px;
-  left: auto;
-  top: auto;
-  background: rgba(17, 17, 17, 0.85);
-  padding: 8px;
-  border-radius: 8px;
-  color: white;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-</style>
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .spinner {
+      width: clamp(8px, 1vw, 13px);
+      height: clamp(8px, 1vw, 13px);
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      flex-shrink: 0;
+    }
+
+    #legend {
+      position: fixed;
+      z-index: 4;
+      left: 1vw;
+      bottom: 1vw;
+      background: rgba(17, 17, 17, 0.85);
+      padding: clamp(4px, 0.6vw, 10px) clamp(6px, 0.9vw, 14px);
+      border-radius: clamp(4px, 0.6vw, 10px);
+      color: white;
+      font-size: clamp(9px, 1.1vw, 14px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(3px, 0.4vw, 6px);
+    }
+
+    #legend .legend-item {
+      display: flex;
+      align-items: center;
+      gap: clamp(4px, 0.5vw, 8px);
+    }
+
+    #legend .dot {
+      width: clamp(6px, 0.7vw, 11px);
+      height: clamp(6px, 0.7vw, 11px);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    #legend .dot-available { background-color: #32CD32; }
+    #legend .dot-booked { background-color: #ff4444; }
+
+    #lastUpdated {
+      font-size: clamp(8px, 0.9vw, 11px);
+      color: #aaaaaa;
+      margin-top: clamp(2px, 0.3vw, 4px);
+      border-top: 1px solid rgba(255,255,255,0.15);
+      padding-top: clamp(2px, 0.3vw, 4px);
+    }
+
+    #zoomUi {
+      position: fixed;
+      z-index: 4;
+      right: 1vw;
+      bottom: 1vw;
+      left: auto;
+      top: auto;
+      background: rgba(17, 17, 17, 0.85);
+      padding: clamp(4px, 0.6vw, 10px);
+      border-radius: clamp(4px, 0.6vw, 10px);
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: clamp(4px, 0.6vw, 8px);
+      font-size: clamp(9px, 1.1vw, 14px);
+    }
+
+    #zoomUi button {
+      width: clamp(22px, 2.2vw, 30px);
+      height: clamp(22px, 2.2vw, 30px);
+      font-size: clamp(14px, 1.4vw, 20px);
+      line-height: 1;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+      flex-shrink: 0;
+      padding: 0;
+    }
+
+    #zoomUi button:hover {
+      background: rgba(255,255,255,0.25);
+    }
+
+    #zoomResetBtn {
+      border-radius: clamp(3px, 0.4vw, 6px) !important;
+      font-size: clamp(9px, 1vw, 13px) !important;
+      width: auto !important;
+      padding: 0 clamp(5px, 0.6vw, 8px) !important;
+      letter-spacing: 0.03em;
+    }
+
+    #zoomLabel {
+      min-width: clamp(28px, 3vw, 40px);
+      text-align: center;
+      font-size: clamp(9px, 1.1vw, 13px);
+      color: #cccccc;
+    }
+
+    #zoomSlider {
+      width: clamp(60px, 8vw, 120px);
+      accent-color: rgba(255,255,255,0.6);
+    }
+  </style>
 </head>
 
 <body>
@@ -149,9 +284,25 @@
     <a href="Conference Rooms Info.html">Conference Rooms</a>
   </div>
 
-  <button class="openbtn" onclick="openNav()">☰ Room Info</button>
+  <button class="openbtn" onclick="openNav()">
+    <svg width="1em" height="1em" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+      <rect width="18" height="2" rx="1" fill="white"/>
+      <rect y="6" width="18" height="2" rx="1" fill="white"/>
+      <rect y="12" width="18" height="2" rx="1" fill="white"/>
+    </svg>
+    Room Info
+  </button>
 
-  <!-- For displaying API result -->
+  <div id="tooltip">
+    <div id="tooltip-name"></div>
+    <div id="tooltip-status"></div>
+  </div>
+
+  <div id="loadingIndicator">
+    <div class="spinner"></div>
+    <span>Loading availability...</span>
+  </div>
+
   <div id="mapWrap">
     <svg
       id="officeMap"
@@ -224,358 +375,248 @@
       <rect id="result201" x="1099" y="214" width="161" height="173"></rect>
 
       <!-- Blue Section -->
-      <a href="Huddle 202 test.html" class="blueSection">
+      <a href="Huddle 202 test.html" class="blueSection" data-room="Huddle 202" data-result="result202">
         <rect class="clickableRect" x="1265" y="574" width="61" height="71"></rect>
-        <title>Huddle 202</title>
       </a>
-
-      <a href="Flex 203.html" class="blueSection">
+      <a href="Flex 203.html" class="blueSection" data-room="Flex 203" data-result="result203">
         <rect class="clickableRect" x="1330" y="574" width="65" height="71"></rect>
-        <title>Flex 203</title>
       </a>
-
-      <a href="Studio 204.html" class="blueSection">
+      <a href="Studio 204.html" class="blueSection" data-room="Studio 204" data-result="result204">
         <rect class="clickableRect" x="1399" y="574" width="63" height="71"></rect>
-        <title>Studio 204</title>
       </a>
-
-      <a href="Flex 205.html" class="blueSection">
+      <a href="Flex 205.html" class="blueSection" data-room="Flex 205" data-result="result205">
         <rect class="clickableRect" x="1466" y="574" width="65" height="71"></rect>
-        <title>Flex 205</title>
       </a>
-
-      <a href="Flex 206.html" class="blueSection">
+      <a href="Flex 206.html" class="blueSection" data-room="Flex 206" data-result="result206">
         <rect class="clickableRect" x="1535" y="574" width="64" height="71"></rect>
-        <title>Flex 206</title>
       </a>
-
-      <a href="Open Collab 207.html" class="blueSection">
+      <a href="Open Collab 207.html" class="blueSection" data-room="Open Collab 207">
         <polygon class="clickableRect" points="1653,560,1653,670,1810,670,1810,609,1773,609,1773,560"></polygon>
-        <title>Open Collab 207</title>
       </a>
-
-      <a href="Potomac 208.html" class="blueSection">
+      <a href="Potomac 208.html" class="blueSection" data-room="Potomac 208" data-result="result208">
         <rect class="clickableRect" x="1926" y="385" width="77" height="96"></rect>
-        <title>Potomac 208</title>
       </a>
-
-      <a href="Rappahannock 209.html" class="blueSection">
+      <a href="Rappahannock 209.html" class="blueSection" data-room="Rappahannock 209" data-result="result209">
         <rect class="clickableRect" x="2008" y="385" width="124" height="96"></rect>
-        <title>Rappahannock 209</title>
       </a>
-
-      <a href="Phone 210.html" class="blueSection">
+      <a href="Phone 210.html" class="blueSection" data-room="Phone 210" data-result="result210">
         <rect class="clickableRect" x="1776" y="560" width="35" height="45"></rect>
-        <title>Phone 210</title>
       </a>
-
-      <a href="Swift Creek 211.html" class="blueSection">
+      <a href="Swift Creek 211.html" class="blueSection" data-room="Swift Creek 211" data-result="result211">
         <rect class="clickableRect" x="1661" y="728" width="150" height="95"></rect>
-        <title>Swift Creek 211</title>
       </a>
-
-      <a href="Flex 212.html" class="blueSection">
+      <a href="Flex 212.html" class="blueSection" data-room="Flex 212" data-result="result212">
         <rect class="clickableRect" x="1815" y="718" width="66" height="72"></rect>
-        <title>Flex 212</title>
       </a>
-
-      <a href="Flex 213.html" class="blueSection">
+      <a href="Flex 213.html" class="blueSection" data-room="Flex 213" data-result="result213">
         <rect class="clickableRect" x="1815" y="794" width="66" height="69"></rect>
-        <title>Flex 213</title>
       </a>
-
-      <a href="Blue Section.html" class="blueSection">
+      <a href="Blue Section.html" class="blueSection" data-room="Blue Section">
         <polygon class="clickableRect" points="1891,870,2127,870,2125,491,1808,491,1807,407,1772,407,1772,391,1782,390,1781,223,1304,222,1300,554,1825,554,1825,706,1891,707"></polygon>
-        <title>Blue Section</title>
       </a>
 
       <!-- Orange Section -->
-      <a href="Flex 214.html" class="orangeSection">
+      <a href="Flex 214.html" class="orangeSection" data-room="Flex 214" data-result="result214">
         <rect class="clickableRect" x="1815" y="867" width="66" height="73"></rect>
-        <title>Flex 214</title>
       </a>
-
-      <a href="Cardinal 215.html" class="orangeSection">
+      <a href="Cardinal 215.html" class="orangeSection" data-room="Cardinal 215" data-result="result215">
         <polygon class="clickableRect" points="1811,827,1614,827,1614,935,1772,935,1772,906,1811,906"></polygon>
-        <title>Cardinal 215</title>
       </a>
-
-      <a href="Open Collab 216.html" class="orangeSection">
+      <a href="Open Collab 216.html" class="orangeSection" data-room="Open Collab 216">
         <rect class="clickableRect" x="1670" y="979" width="159" height="72"></rect>
-        <title>Open Collab 216</title>
       </a>
-
-      <a href="Bluebird 217.html" class="orangeSection">
+      <a href="Bluebird 217.html" class="orangeSection" data-room="Bluebird 217" data-result="result217">
         <rect class="clickableRect" x="1923" y="1169" width="209" height="98"></rect>
-        <title>Bluebird 217</title>
       </a>
-
-      <a href="Phone 218.html" class="orangeSection">
+      <a href="Phone 218.html" class="orangeSection" data-room="Phone 218" data-result="result218">
         <rect class="clickableRect" x="1777" y="1055" width="52" height="34"></rect>
-        <title>Phone 218</title>
       </a>
-
-      <a href="Phone 219.html" class="orangeSection">
+      <a href="Phone 219.html" class="orangeSection" data-room="Phone 219" data-result="result219">
         <rect class="clickableRect" x="1725" y="1055" width="48" height="34"></rect>
-        <title>Phone 219</title>
       </a>
-
-      <a href="Phone 220.html" class="orangeSection">
+      <a href="Phone 220.html" class="orangeSection" data-room="Phone 220" data-result="result220">
         <rect class="clickableRect" x="1670" y="1055" width="51" height="34"></rect>
-        <title>Huddle 220</title>
       </a>
-
-      <a href="Flex 221.html" class="orangeSection">
+      <a href="Flex 221.html" class="orangeSection" data-room="Flex 221" data-result="result221">
         <rect class="clickableRect" x="1551" y="1002" width="64" height="74"></rect>
-        <title>Flex 221</title>
       </a>
-
-      <a href="Flex 222.html" class="orangeSection">
+      <a href="Flex 222.html" class="orangeSection" data-room="Flex 222" data-result="result222">
         <rect class="clickableRect" x="1484" y="1002" width="63" height="74"></rect>
-        <title>Flex 222</title>
       </a>
-
-      <a href="Studio 223.html" class="orangeSection">
+      <a href="Studio 223.html" class="orangeSection" data-room="Studio 223" data-result="result223">
         <rect class="clickableRect" x="1416" y="1002" width="63" height="74"></rect>
-        <title>Studio 223</title>
       </a>
-
-      <a href="Flex 224.html" class="orangeSection">
+      <a href="Flex 224.html" class="orangeSection" data-room="Flex 224" data-result="result224">
         <rect class="clickableRect" x="1348" y="1002" width="64" height="74"></rect>
-        <title>Flex 224</title>
       </a>
-
-      <a href="Flex 225.html" class="orangeSection">
+      <a href="Flex 225.html" class="orangeSection" data-room="Flex 225" data-result="result225">
         <rect class="clickableRect" x="1275" y="1002" width="69" height="74"></rect>
-        <title>Flex 225</title>
       </a>
-
-      <a href="Huddle 226.html" class="orangeSection">
+      <a href="Huddle 226.html" class="orangeSection" data-room="Huddle 226" data-result="result226">
         <rect class="clickableRect" x="1211" y="1003" width="60" height="73"></rect>
-        <title>Huddle 226</title>
       </a>
-
-      <a href="Studio 227.html" class="orangeSection">
+      <a href="Studio 227.html" class="orangeSection" data-room="Studio 227" data-result="result227">
         <rect class="clickableRect" x="1179" y="1127" width="72" height="65"></rect>
-        <title>Studio 227</title>
       </a>
-
-      <a href="Flex 229.html" class="orangeSection">
+      <a href="Flex 229.html" class="orangeSection" data-room="Flex 229" data-result="result229">
         <rect class="clickableRect" x="1179" y="1265" width="72" height="64"></rect>
-        <title>Flex 229</title>
       </a>
-
-      <a href="Orange Section.html" class="orangeSection">
+      <a href="Orange Section.html" class="orangeSection" data-room="Orange Section">
         <polygon class="clickableRect" points="1890,873,2128,875,2128,1164,1786,1162,1784,1437,1272,1437,1270,1101,1839,1101,1839,950,1890,950,1890,906"></polygon>
-        <title>Orange Section</title>
       </a>
 
       <!-- Teal Section -->
-      <a href="Studio 231.html" class="tealSection">
+      <a href="Studio 231.html" class="tealSection" data-room="Studio 231" data-result="result231">
         <rect class="clickableRect" x="1103" y="1265" width="72" height="64"></rect>
-        <title>Studio 231</title>
       </a>
-
-      <a href="Flex 232.html" class="tealSection">
+      <a href="Flex 232.html" class="tealSection" data-room="Flex 232" data-result="result232">
         <rect class="clickableRect" x="1103" y="1127" width="72" height="65"></rect>
-        <title>Flex 232</title>
       </a>
-
-      <a href="Huddle 233.html" class="tealSection">
+      <a href="Huddle 233.html" class="tealSection" data-room="Huddle 233" data-result="result233">
         <rect class="clickableRect" x="1078" y="1004" width="66" height="72"></rect>
-        <title>Huddle 233</title>
       </a>
-
-      <a href="Flex 234.html" class="tealSection">
+      <a href="Flex 234.html" class="tealSection" data-room="Flex 234" data-result="result234">
         <rect class="clickableRect" x="1010" y="1004" width="64" height="72"></rect>
-        <title>Flex 234</title>
       </a>
-
-      <a href="Studio 235.html" class="tealSection">
+      <a href="Studio 235.html" class="tealSection" data-room="Studio 235" data-result="result235">
         <rect class="clickableRect" x="943" y="1004" width="63" height="72"></rect>
-        <title>Studio 235</title>
       </a>
-
-      <a href="Flex 236.html" class="tealSection">
+      <a href="Flex 236.html" class="tealSection" data-room="Flex 236" data-result="result236">
         <rect class="clickableRect" x="876" y="1004" width="62" height="72"></rect>
-        <title>Flex 236</title>
       </a>
-
-      <a href="Flex 237.html" class="tealSection">
+      <a href="Flex 237.html" class="tealSection" data-room="Flex 237" data-result="result237">
         <rect class="clickableRect" x="806" y="1004" width="66" height="72"></rect>
-        <title>Flex 237</title>
       </a>
-
-      <a href="Copy 238.html" class="tealSection">
+      <a href="Copy 238.html" class="tealSection" data-room="Copy Station 238">
         <polygon class="clickableRect" points="686,770,743,770,743,837,753,837,753,870,686,868"></polygon>
-        <title>Copy Station 238</title>
       </a>
-
-      <a href="Dogwood 239.html" class="tealSection">
+      <a href="Dogwood 239.html" class="tealSection" data-room="Dogwood 239" data-result="result239">
         <polygon class="clickableRect" points="566,827,684,827,684,872,753,874,753,941,568,941"></polygon>
-        <title>Dogwood 239</title>
       </a>
-
-      <a href="Open Collab 240.html" class="tealSection">
+      <a href="Open Collab 240.html" class="tealSection" data-room="Open Collab 240">
         <rect class="clickableRect" x="616" y="981" width="137" height="96"></rect>
-        <title>Open Collab 240</title>
       </a>
-
-      <a href="Magnolia 241.html" class="tealSection">
+      <a href="Magnolia 241.html" class="tealSection" data-room="Magnolia 241" data-result="result241">
         <rect class="clickableRect" x="354" y="1169" width="80" height="98"></rect>
-        <title>Magnolia 241</title>
       </a>
-
-      <a href="Willow 242.html" class="tealSection">
+      <a href="Willow 242.html" class="tealSection" data-room="Willow 242" data-result="result242">
         <rect class="clickableRect" x="227" y="1169" width="123" height="98"></rect>
-        <title>Willow 242</title>
       </a>
-
-      <a href="Flex 243.html" class="tealSection">
+      <a href="Flex 243.html" class="tealSection" data-room="Flex 243" data-result="result243">
         <rect class="clickableRect" x="499" y="1054" width="64" height="72"></rect>
-        <title>Flex 243</title>
       </a>
-
-      <a href="Flex 244.html" class="tealSection">
+      <a href="Flex 244.html" class="tealSection" data-room="Flex 244" data-result="result244">
         <rect class="clickableRect" x="499" y="978" width="64" height="72"></rect>
-        <title>Flex 244</title>
       </a>
-
-      <a href="Flex 245.html" class="tealSection">
+      <a href="Flex 245.html" class="tealSection" data-room="Flex 245" data-result="result245">
         <rect class="clickableRect" x="499" y="864" width="64" height="70"></rect>
-        <title>Flex 245</title>
       </a>
-
-      <a href="Studio 246.html" class="tealSection">
+      <a href="Studio 246.html" class="tealSection" data-room="Studio 246" data-result="result246">
         <rect class="clickableRect" x="499" y="790" width="64" height="70"></rect>
-        <title>Studio 246</title>
       </a>
-
-      <a href="Teal Section.html" class="tealSection">
+      <a href="Teal Section.html" class="tealSection" data-room="Teal Section">
         <polygon class="clickableRect" points="578,1140,487,1140,487,776,225,776,227,1158,532,1158,530,1262,574,1262,574,1437,1089,1437,1085,1093,790,1093,578,1093"></polygon>
-        <title>Teal Section</title>
       </a>
 
       <!-- Yellow Section -->
-      <a href="Azalea 201.html" class="yellowSection">
+      <a href="Azalea 201.html" class="yellowSection" data-room="Azalea 201" data-result="result201">
         <rect class="clickableRect" x="1099" y="214" width="161" height="173"></rect>
-        <title>Azalea 201</title>
       </a>
-
-      <a href="Flex 247.html" class="yellowSection">
+      <a href="Flex 247.html" class="yellowSection" data-room="Flex 247" data-result="result247">
         <rect class="clickableRect" x="499" y="715" width="64" height="71"></rect>
-        <title>Flex 247</title>
       </a>
-
-      <a href="Flex 248.html" class="yellowSection">
+      <a href="Flex 248.html" class="yellowSection" data-room="Flex 248" data-result="result248">
         <rect class="clickableRect" x="499" y="600" width="64" height="71"></rect>
-        <title>Flex 248</title>
       </a>
-
-      <a href="Flex 249.html" class="yellowSection">
+      <a href="Flex 249.html" class="yellowSection" data-room="Flex 249" data-result="result249">
         <rect class="clickableRect" x="499" y="524" width="64" height="72"></rect>
-        <title>Flex 249</title>
       </a>
-
-      <a href="Iris 250.html" class="yellowSection">
+      <a href="Iris 250.html" class="yellowSection" data-room="Iris 250" data-result="result250">
         <rect class="clickableRect" x="226" y="385" width="210" height="96"></rect>
-        <title>Iris 250</title>
       </a>
-
-      <a href="Phone 251.html" class="yellowSection">
+      <a href="Phone 251.html" class="yellowSection" data-room="Phone 251" data-result="result251">
         <rect class="clickableRect" x="617" y="562" width="44" height="39"></rect>
-        <title>Phone 251</title>
       </a>
-
-      <a href="Open Collab 252.html" class="yellowSection">
+      <a href="Open Collab 252.html" class="yellowSection" data-room="Open Collab 252">
         <polygon class="clickableRect" points="664,562,751,562,751,656,617,656,617,605,664,605"></polygon>
-        <title>Open Collab 252</title>
       </a>
-
-      <a href="Tulip 253.html" class="yellowSection">
+      <a href="Tulip 253.html" class="yellowSection" data-room="Tulip 253" data-result="result253">
         <rect class="clickableRect" x="567" y="709" width="115" height="116"></rect>
-        <title>Tulip 253</title>
       </a>
-
-      <a href="Lactation 254.html" class="yellowSection">
+      <a href="Lactation 254.html" class="yellowSection" data-room="Lactation 254" data-result="result254">
         <rect class="clickableRect" x="686" y="709" width="56" height="59"></rect>
-        <title>Lactation 254</title>
       </a>
-
-      <a href="Wellness 255.html" class="yellowSection">
+      <a href="Wellness 255.html" class="yellowSection" data-room="Wellness 255" data-result="result255">
         <rect class="clickableRect" x="785" y="576" width="38" height="81"></rect>
-        <title>Wellness 255</title>
       </a>
-
-      <a href="Studio 256.html" class="yellowSection">
+      <a href="Studio 256.html" class="yellowSection" data-room="Studio 256" data-result="result256">
         <rect class="clickableRect" x="827" y="576" width="63" height="68"></rect>
-        <title>Studio 256</title>
       </a>
-
-      <a href="Flex 257.html" class="yellowSection">
+      <a href="Flex 257.html" class="yellowSection" data-room="Flex 257" data-result="result257">
         <rect class="clickableRect" x="894" y="576" width="65" height="68"></rect>
-        <title>Flex 257</title>
       </a>
-
-      <a href="Flex 258.html" class="yellowSection">
+      <a href="Flex 258.html" class="yellowSection" data-room="Flex 258" data-result="result258">
         <rect class="clickableRect" x="963" y="576" width="64" height="68"></rect>
-        <title>Flex 258</title>
       </a>
-
-      <a href="Huddle 259.html" class="yellowSection">
+      <a href="Huddle 259.html" class="yellowSection" data-room="Huddle 259" data-result="result259">
         <rect class="clickableRect" x="1031" y="576" width="64" height="68"></rect>
-        <title>Huddle 259</title>
       </a>
-
-      <a href="Yellow Section.html" class="yellowSection">
+      <a href="Yellow Section.html" class="yellowSection" data-room="Yellow Section">
         <polygon class="clickableRect" points="492,773,227,775,227,488,570,485,574,216,1096,216,1096,551,574,551,574,516,492,516"></polygon>
-        <title>Yellow Section</title>
       </a>
 
       <!-- Grey Section -->
-      <a href="Common Room 200.html" class="greySection">
+      <a href="Common Room 200.html" class="greySection" data-room="Common Room 200">
         <rect class="clickableRect" x="1099" y="433" width="163" height="222"></rect>
-        <title>Common Room 200</title>
       </a>
-
-      <a href="Pantry 261.html" class="greySection">
+      <a href="Pantry 261.html" class="greySection" data-room="Pantry 261">
         <rect class="clickableRect" x="1002" y="709" width="90" height="140"></rect>
-        <title>Pantry 261</title>
       </a>
-
-      <a href="Tech Stop 228.html" class="greySection">
+      <a href="Tech Stop 228.html" class="greySection" data-room="Tech Stop 228">
         <rect class="clickableRect" x="1103" y="1196" width="148" height="64"></rect>
-        <title>Tech Stop 228</title>
       </a>
-
-      <a href="Lounge 230.html" class="greySection">
+      <a href="Lounge 230.html" class="greySection" data-room="Lounge 230">
         <rect class="clickableRect" x="1099" y="1333" width="158" height="102"></rect>
-        <title>Lounge 230</title>
       </a>
 
-</svg>
-</div>
+    </svg>
+  </div>
 
-<div id="zoomUi">
-  <button id="zoomOutBtn">-</button>
-  <input id="zoomSlider" type="range" min="0" max="100" value="0">
-  <button id="zoomInBtn">+</button>
-  <button id="zoomResetBtn" type="button">Reset</button>
-  <div id="zoomLabel">100%</div>
-</div>
+  <div id="legend">
+    <div class="legend-item">
+      <div class="dot dot-available"></div>
+      <span>Available</span>
+    </div>
+    <div class="legend-item">
+      <div class="dot dot-booked"></div>
+      <span>Booked</span>
+    </div>
+    <div id="lastUpdated">Updated: --:--</div>
+  </div>
+
+  <div id="zoomUi">
+    <button id="zoomOutBtn" title="Zoom out">−</button>
+    <input id="zoomSlider" type="range" min="0" max="100" value="0">
+    <button id="zoomInBtn" title="Zoom in">+</button>
+    <div id="zoomLabel">100%</div>
+    <button id="zoomResetBtn" type="button" title="Reset view">Reset</button>
+  </div>
 
   <script>
     function openNav() {
       document.getElementById("Sidepanel").style.width = "250px";
     }
-
     function closeNav() {
       document.getElementById("Sidepanel").style.width = "0";
     }
   </script>
 
   <script>
+    const loadingIndicator = document.getElementById("loadingIndicator");
+    const lastUpdated = document.getElementById("lastUpdated");
+
     async function fetchOfficeInfo() {
+      loadingIndicator.classList.add("visible");
       try {
         const apiBase = window.location.protocol === "file:" ? "http://localhost:3000" : "";
         const response = await fetch(`${apiBase}/checkCalendar`);
@@ -644,6 +685,10 @@
 
       } catch (error) {
         console.error("Failed to check calendar status:", error);
+      } finally {
+        loadingIndicator.classList.remove("visible");
+        const now = new Date();
+        lastUpdated.textContent = "Updated: " + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       }
     }
 
@@ -651,174 +696,189 @@
     setInterval(fetchOfficeInfo, 5 * 60 * 1000);
   </script>
 
+  <script>
+    // Tooltip logic
+    const tooltip = document.getElementById("tooltip");
+    const tooltipName = document.getElementById("tooltip-name");
+    const tooltipStatus = document.getElementById("tooltip-status");
+
+    document.querySelectorAll("a[data-room]").forEach(anchor => {
+      const roomName = anchor.getAttribute("data-room");
+      const resultId = anchor.getAttribute("data-result");
+
+      let hoverTimer;
+      anchor.addEventListener("mousemove", (e) => {
+        clearTimeout(hoverTimer);
+        tooltip.style.left = (e.clientX + 14) + "px";
+        tooltip.style.top = (e.clientY - 10) + "px";
+        tooltipName.textContent = roomName;
+
+        if (resultId) {
+          const el = document.getElementById(resultId);
+          if (el && el.style.stroke) {
+            const booked = el.style.stroke === "red";
+            tooltipStatus.className = booked ? "status-booked" : "status-available";
+            tooltipStatus.textContent = booked ? "● Booked" : "● Available";
+          } else {
+            tooltipStatus.className = "status-unknown";
+            tooltipStatus.textContent = "● Status unknown";
+          }
+        } else {
+          tooltipStatus.textContent = "";
+        }
+
+        hoverTimer = setTimeout(() => {
+          tooltip.classList.add("visible");
+        }, 400);
+      });
+
+      anchor.addEventListener("mouseleave", () => {
+        clearTimeout(hoverTimer);
+        tooltip.classList.remove("visible");
+      });
+    });
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
 
-<script>
-  window.addEventListener("load", function () {
-    if (!window.svgPanZoom) return;
+  <script>
+    window.addEventListener("load", function () {
+      if (!window.svgPanZoom) return;
 
-    const panZoom = window.svgPanZoom("#officeMap", {
-      zoomEnabled: true,
-      panEnabled: true,
-      panFactor: 50,
-      limits: true,
-      controlIconsEnabled: false,
-      fit: true,
-      center: true,
-      zoomScaleSensitivity: 0.25,
-      minZoom: 0.6,
-      maxZoom: 4,
-      mouseWheelZoomEnabled: true,
-      zoomAtPoint: true,
-      dblClickZoomEnabled: false,
-      preventMouseEventsDefault: true
-    });
+      const panZoom = window.svgPanZoom("#officeMap", {
+        zoomEnabled: true,
+        panEnabled: true,
+        panFactor: 50,
+        limits: true,
+        controlIconsEnabled: false,
+        fit: true,
+        center: true,
+        zoomScaleSensitivity: 0.25,
+        minZoom: 0.6,
+        maxZoom: 4,
+        mouseWheelZoomEnabled: true,
+        zoomAtPoint: true,
+        dblClickZoomEnabled: false,
+        preventMouseEventsDefault: true
+      });
 
-const zoomInBtn = document.getElementById("zoomInBtn");
-const zoomOutBtn = document.getElementById("zoomOutBtn");
-const zoomSlider = document.getElementById("zoomSlider");
-const zoomLabel = document.getElementById("zoomLabel");
-const zoomResetBtn = document.getElementById("zoomResetBtn");
-let isDraggingSlider = false;
+      const zoomInBtn = document.getElementById("zoomInBtn");
+      const zoomOutBtn = document.getElementById("zoomOutBtn");
+      const zoomSlider = document.getElementById("zoomSlider");
+      const zoomLabel = document.getElementById("zoomLabel");
+      const zoomResetBtn = document.getElementById("zoomResetBtn");
+      let isDraggingSlider = false;
 
-    const minZoom = panZoom.getMinZoom ? panZoom.getMinZoom() : 0.6;
-    const maxZoom = panZoom.getMaxZoom ? panZoom.getMaxZoom() : 4;
+      const minZoom = panZoom.getMinZoom ? panZoom.getMinZoom() : 0.6;
+      const maxZoom = panZoom.getMaxZoom ? panZoom.getMaxZoom() : 4;
 
-zoomResetBtn.addEventListener("click", function () {
-  panZoom.reset();
-  panZoom.fit();
-  panZoom.center();
-  updateZoomUi();
-});
+      zoomResetBtn.addEventListener("click", function () {
+        panZoom.reset();
+        panZoom.fit();
+        panZoom.center();
+        updateZoomUi();
+      });
 
-    function zoomToSliderValue(v) {
-      const t = Number(v) / 100;
-      const z = minZoom + (maxZoom - minZoom) * t;
-      panZoom.zoom(z);
-    }
-
-    function sliderValueFromZoom(z) {
-      const t = (z - minZoom) / (maxZoom - minZoom);
-      return Math.max(0, Math.min(100, Math.round(t * 100)));
-    }
-
-    function updateZoomUi() {
-      const z = panZoom.getZoom();
-      zoomLabel.textContent = Math.round(z * 100) + "%";
-      if (!isDraggingSlider) {
-        zoomSlider.value = sliderValueFromZoom(z);
+      function zoomToSliderValue(v) {
+        const t = Number(v) / 100;
+        const z = minZoom + (maxZoom - minZoom) * t;
+        panZoom.zoom(z);
       }
-    }
 
-    zoomInBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      panZoom.zoomIn();
-      updateZoomUi();
-    });
-
-    zoomOutBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      panZoom.zoomOut();
-      updateZoomUi();
-    });
-
-    zoomSlider.addEventListener("pointerdown", function (e) {
-      isDraggingSlider = true;
-      e.stopPropagation();
-    });
-
-    window.addEventListener("pointerup", function () {
-      isDraggingSlider = false;
-      updateZoomUi();
-    });
-
-    zoomSlider.addEventListener("input", function (e) {
-      e.stopPropagation();
-      zoomToSliderValue(zoomSlider.value);
-      updateZoomUi();
-    });
-
-    zoomSlider.addEventListener("change", function (e) {
-      e.stopPropagation();
-      zoomToSliderValue(zoomSlider.value);
-      updateZoomUi();
-    });
-
-    panZoom.setOnZoom(function () {
-      updateZoomUi();
-    });
-
-    let resizeTimer = null;
-   window.addEventListener("resize", function () {
-  panZoom.resize();
-  panZoom.fit();
-  panZoom.center();
-  panZoom.updateBBox();
-
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(function () {
-    const z = panZoom.getZoom();
-    const minZ = panZoom.getMinZoom ? panZoom.getMinZoom() : minZoom;
-    const nearMin = Math.abs(z - minZ) < 0.02;
-
-    if (nearMin) {
-      panZoom.fit();
-      panZoom.center();
-    }
-
-    panZoom.updateBBox();
-    updateZoomUi();
-  }, 80);
-});
-
-    // Keyboard shortcuts
-    window.addEventListener("keydown", function (e) {
-      const tag = document.activeElement.tagName;
-      if (tag === "INPUT" || tag === "TEXTAREA") return;
-
-      switch (e.key) {
-        case "+":
-        case "=":
-          e.preventDefault();
-          panZoom.zoomIn();
-          updateZoomUi();
-          break;
-
-        case "-":
-          e.preventDefault();
-          panZoom.zoomOut();
-          updateZoomUi();
-          break;
-
-        case "0":
-          e.preventDefault();
-          panZoom.fit();
-          panZoom.center();
-          updateZoomUi();
-          break;
-
-        case "ArrowUp":
-          panZoom.panBy({ x: 0, y: 50 });
-          break;
-
-        case "ArrowDown":
-          panZoom.panBy({ x: 0, y: -50 });
-          break;
-
-        case "ArrowLeft":
-          panZoom.panBy({ x: 50, y: 0 });
-          break;
-
-        case "ArrowRight":
-          panZoom.panBy({ x: -50, y: 0 });
-          break;
+      function sliderValueFromZoom(z) {
+        const t = (z - minZoom) / (maxZoom - minZoom);
+        return Math.max(0, Math.min(100, Math.round(t * 100)));
       }
-    });
 
-    updateZoomUi();
-  });
-</script>
+      function updateZoomUi() {
+        const z = panZoom.getZoom();
+        zoomLabel.textContent = Math.round(z * 100) + "%";
+        if (!isDraggingSlider) {
+          zoomSlider.value = sliderValueFromZoom(z);
+        }
+      }
+
+      zoomInBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        panZoom.zoomIn();
+        updateZoomUi();
+      });
+
+      zoomOutBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        panZoom.zoomOut();
+        updateZoomUi();
+      });
+
+      zoomSlider.addEventListener("pointerdown", function (e) {
+        isDraggingSlider = true;
+        e.stopPropagation();
+      });
+
+      window.addEventListener("pointerup", function () {
+        isDraggingSlider = false;
+        updateZoomUi();
+      });
+
+      zoomSlider.addEventListener("input", function (e) {
+        e.stopPropagation();
+        zoomToSliderValue(zoomSlider.value);
+        updateZoomUi();
+      });
+
+      zoomSlider.addEventListener("change", function (e) {
+        e.stopPropagation();
+        zoomToSliderValue(zoomSlider.value);
+        updateZoomUi();
+      });
+
+      panZoom.setOnZoom(function () {
+        updateZoomUi();
+      });
+
+      let resizeTimer = null;
+      window.addEventListener("resize", function () {
+        panZoom.resize();
+        panZoom.fit();
+        panZoom.center();
+        panZoom.updateBBox();
+
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+          const z = panZoom.getZoom();
+          const minZ = panZoom.getMinZoom ? panZoom.getMinZoom() : minZoom;
+          const nearMin = Math.abs(z - minZ) < 0.02;
+          if (nearMin) {
+            panZoom.fit();
+            panZoom.center();
+          }
+          panZoom.updateBBox();
+          updateZoomUi();
+        }, 80);
+      });
+
+      window.addEventListener("keydown", function (e) {
+        const tag = document.activeElement.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA") return;
+
+        switch (e.key) {
+          case "+": case "=":
+            e.preventDefault(); panZoom.zoomIn(); updateZoomUi(); break;
+          case "-":
+            e.preventDefault(); panZoom.zoomOut(); updateZoomUi(); break;
+          case "0":
+            e.preventDefault(); panZoom.fit(); panZoom.center(); updateZoomUi(); break;
+          case "ArrowUp": panZoom.panBy({ x: 0, y: 50 }); break;
+          case "ArrowDown": panZoom.panBy({ x: 0, y: -50 }); break;
+          case "ArrowLeft": panZoom.panBy({ x: 50, y: 0 }); break;
+          case "ArrowRight": panZoom.panBy({ x: -50, y: 0 }); break;
+        }
+      });
+
+      updateZoomUi();
+    });
+  </script>
 </body>
 </html>
