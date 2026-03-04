@@ -1,64 +1,270 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Huddle 202</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow: auto;
-            position: relative; /* Make the body a positioning context for absolute positioning */
-        }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Huddle 202</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 
-        .back-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
+  <style>
+    :root {
+      --ui-bg: rgba(17,17,17,0.85);
+      --ui-bg-panel: rgba(17,17,17,0.55);
+      --ui-border: rgba(255,255,255,0.12);
+      --ui-text: #ffffff;
+      --ui-text-dim: #aaaaaa;
+      --ui-divider: rgba(255,255,255,0.1);
+      --accent: #32CD32;
+    }
 
-        .back-button:hover {
-            background-color: #0056b3;
-        }
+    *, *::before, *::after { box-sizing: border-box; }
 
-        img {
-            max-width: 100%; /* Adjust the width as needed */
-            height: auto;
-            display: block; /* Add this to center the image */
-        }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: "Lato", sans-serif;
+      background: #f0f0f0;
+      color: var(--ui-text);
+    }
 
-        /* Style the container for the calendar */
-        .calendar-container {
-            position: absolute;
-            bottom: -610px; /* Adjust the bottom position as needed */
-            left: 20px; /* Adjust the left position as needed */
-            width: 1150px; /* Adjust the initial width as needed */
-            height: 600px; /* Adjust the initial height as needed */
-            border: 1px solid #ccc; /* Add a border around the calendar box */
-            resize: both; /* Enable resizing */
-            overflow: hidden; /* Allow content to be scrolled if needed */
-        }
+    /* ── Back button ── */
+    .back-button {
+      position: fixed;
+      top: clamp(10px, 1.2vw, 18px);
+      left: clamp(10px, 1.2vw, 18px);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: clamp(6px, 0.8vw, 10px) clamp(10px, 1.2vw, 16px);
+      background: var(--ui-bg);
+      color: var(--ui-text);
+      text-decoration: none;
+      border: 1px solid var(--ui-border);
+      border-radius: clamp(4px, 0.6vw, 10px);
+      font-family: "Lato", sans-serif;
+      font-size: clamp(11px, 1.2vw, 15px);
+      letter-spacing: 0.02em;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
 
-        /* Style the iframe inside the calendar container */
-        #outlook-calendar {
-            width: 100%; /* Adjust the width as needed */
-            height: 100%; /* Adjust the height as needed */
-            border: none; /* Remove iframe border */
-        }
-    </style>
+    .back-button:hover {
+      border-color: rgba(255,255,255,0.3);
+      background: rgba(40,40,40,0.92);
+    }
+
+    /* ── Page layout ── */
+    .page {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 100vh;
+      height: 100vh;
+    }
+
+    /* ── Left panel — photo ── */
+    .photo-panel {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .photo-panel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Gradient overlay at bottom of photo */
+    .photo-panel::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.7) 0%,
+        rgba(0,0,0,0.1) 40%,
+        transparent 70%
+      );
+      pointer-events: none;
+    }
+
+    /* Room info badge over photo */
+    .room-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      padding: clamp(20px, 3vw, 40px);
+    }
+
+    .room-tag {
+      display: inline-block;
+      font-size: clamp(9px, 0.9vw, 12px);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: clamp(4px, 0.5vw, 8px);
+    }
+
+    .room-name {
+      font-size: clamp(24px, 3.5vw, 52px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+      margin: 0 0 clamp(8px, 1vw, 16px);
+    }
+
+    .room-meta {
+      display: flex;
+      gap: clamp(12px, 1.5vw, 20px);
+      flex-wrap: wrap;
+    }
+
+    .meta-chip {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: clamp(10px, 1vw, 13px);
+      color: rgba(255,255,255,0.8);
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 999px;
+      padding: 4px clamp(8px, 1vw, 12px);
+      backdrop-filter: blur(6px);
+    }
+
+    /* ── Right panel — calendar ── */
+    .calendar-panel {
+      display: flex;
+      flex-direction: column;
+      background: #1a1a1a;
+      border-left: 1px solid var(--ui-border);
+      overflow: hidden;
+    }
+
+    .calendar-header {
+      padding: clamp(16px, 2vw, 28px) clamp(16px, 2vw, 28px) clamp(12px, 1.5vw, 20px);
+      border-bottom: 1px solid var(--ui-divider);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .calendar-title {
+      font-size: clamp(11px, 1.1vw, 14px);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ui-text-dim);
+    }
+
+    .status-dot {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: clamp(10px, 1vw, 13px);
+      color: var(--accent);
+    }
+
+    .status-dot::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
+    }
+
+    .calendar-scroll {
+      flex: 1;
+      overflow: auto;
+    }
+
+    .calendar-panel iframe {
+      width: 100%;
+      min-width: 600px;
+      height: 100%;
+      min-height: 500px;
+      border: none;
+      display: block;
+      /* invert Outlook's white background to match dark theme */
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    /* ── Responsive: stack on narrow screens ── */
+    @media (max-width: 700px) {
+      .page {
+        grid-template-columns: 1fr;
+        grid-template-rows: 45vh 1fr;
+        height: auto;
+        min-height: 100vh;
+      }
+
+      .calendar-panel {
+        border-left: none;
+        border-top: 1px solid var(--ui-border);
+        min-height: 500px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <a class="back-button" href="javascript:history.back()">Back</a>
-    <img src="huddle 202.jpg">
-    <div class="calendar-container">
-        <iframe id="outlook-calendar" src="https://outlook.office365.com/owa/calendar/037cd37254ff407ebe9128614f96ab86@eab.com/0ba41ce9cc7349e799cd2a7ba0c734a45695048086882002853/calendar.html" frameborder="0" scrolling="no"></iframe>
+
+  <a class="back-button" href="javascript:history.back()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to Map
+  </a>
+
+  <div class="page">
+
+    <!-- Left: room photo + info -->
+    <div class="photo-panel">
+      <img src="huddle%20202.jpg" alt="Huddle 202">
+      <div class="room-info">
+        <div class="room-tag">West Broad · 2nd Floor</div>
+        <h1 class="room-name">Huddle 202</h1>
+        <div class="room-meta">
+          <div class="meta-chip">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.2" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 10.5c0-2.485 2.015-4.5 4.5-4.5s4.5 2.015 4.5 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            4 people
+          </div>
+          <div class="meta-chip">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1.5" y="2.5" width="9" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M4 1.5v2M8 1.5v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Bookable
+          </div>
+          <div class="meta-chip">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1.5" y="1.5" width="9" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M4 10.5h4M6 8.5v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Display screen
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Right: calendar -->
+    <div class="calendar-panel">
+      <div class="calendar-header">
+        <div class="calendar-title">Room Calendar</div>
+        <div class="status-dot">Live</div>
+      </div>
+      <div class="calendar-scroll">
+        <iframe
+          src="https://outlook.office365.com/owa/calendar/037cd37254ff407ebe9128614f96ab86@eab.com/0ba41ce9cc7349e799cd2a7ba0c734a45695048086882002853/calendar.html"
+          scrolling="yes">
+        </iframe>
+      </div>
+    </div>
+
+  </div>
+
 </body>
 </html>
- 
