@@ -1,39 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Orange Section</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            position: relative;
-        }
-
-        .back-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
-
-        .back-button:hover {
-            background-color: #0056b3;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orange Section</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="rooms.css">
 </head>
 <body>
-    <a class="back-button" href="javascript:history.back()">Back</a>
-    <img src="Orange Section.jpg">
+
+  <a class="back-button" href="javascript:history.back()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to Map
+  </a>
+
+  <div class="page">
+    <div class="photo-panel" style="grid-column: 1 / -1;">
+      <img src="Orange%20Section.jpg" alt="Orange Section">
+      <div class="room-info">
+        <h1 class="room-name">Orange Section</h1>
+        <div class="room-tag">West Broad · 2nd Floor</div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

@@ -30,7 +30,7 @@
       margin: 0;
       height: 100%;
       overflow: hidden;
-      background: #ffffff;
+      background: #111111;
       transition: background 0.4s ease;
     }
 
@@ -467,7 +467,7 @@
       <a href="Cardinal 215.html" class="orangeSection" data-room="Cardinal 215" data-result="result215">
         <polygon class="clickableRect" points="1811,827,1614,827,1614,935,1772,935,1772,906,1811,906"></polygon>
       </a>
-      <a href="Open Collab 216.html" class="orangeSection" data-room="Open Collab 216">
+      <a href="javascript:void(0)" class="orangeSection" data-room="Open Collab 216" data-permanent="true" data-tooltip="Coming Soon">
         <rect class="clickableRect" x="1670" y="979" width="159" height="72"></rect>
       </a>
       <a href="Bluebird 217.html" class="orangeSection" data-room="Bluebird 217" data-result="result217">
@@ -538,7 +538,7 @@
       <a href="Dogwood 239.html" class="tealSection" data-room="Dogwood 239" data-result="result239">
         <polygon class="clickableRect" points="566,827,684,827,684,872,753,874,753,941,568,941"></polygon>
       </a>
-      <a href="Open Collab 240.html" class="tealSection" data-room="Open Collab 240">
+      <a href="javascript:void(0)" class="tealSection" data-room="Open Collab 240" data-permanent="true" data-tooltip="Coming Soon">
         <rect class="clickableRect" x="616" y="981" width="137" height="96"></rect>
       </a>
       <a href="Magnolia 241.html" class="tealSection" data-room="Magnolia 241" data-result="result241">
@@ -777,7 +777,7 @@
 
         if (anchor.getAttribute("data-permanent")) {
           tooltipStatus.className = "status-unknown";
-          tooltipStatus.textContent = "● Permanent Office";
+          tooltipStatus.textContent = "● " + (anchor.getAttribute("data-tooltip") || "Permanent Office");
         } else if (resultId) {
           const el = document.getElementById(resultId);
           if (el && el.style.stroke) {
@@ -817,7 +817,7 @@
         fit: true,
         center: true,
         zoomScaleSensitivity: 0.25,
-        minZoom: 0.6,
+        minZoom: 1,
         maxZoom: 4,
         mouseWheelZoomEnabled: true,
         zoomAtPoint: true,
@@ -832,7 +832,7 @@
       const zoomResetBtn = document.getElementById("zoomResetBtn");
       let isDraggingSlider = false;
 
-      const minZoom = panZoom.getMinZoom ? panZoom.getMinZoom() : 0.6;
+      const minZoom = panZoom.getMinZoom ? panZoom.getMinZoom() : 1;
       const maxZoom = panZoom.getMaxZoom ? panZoom.getMaxZoom() : 4;
 
       zoomResetBtn.addEventListener("click", function () {

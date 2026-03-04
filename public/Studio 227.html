@@ -1,64 +1,234 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Studio 227</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow: auto;
-            position: relative; /* Make the body a positioning context for absolute positioning */
-        }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Studio 227</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 
-        .back-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
-
-        .back-button:hover {
-            background-color: #0056b3;
-        }
-
-        img {
-            max-width: 100%; /* Adjust the width as needed */
-            height: auto;
-            display: block; /* Add this to center the image */
-        }
-
-        /* Style the container for the calendar */
-        .calendar-container {
-            position: absolute;
-            bottom: -610px; /* Adjust the bottom position as needed */
-            left: 20px; /* Adjust the left position as needed */
-            width: 1150px; /* Adjust the initial width as needed */
-            height: 600px; /* Adjust the initial height as needed */
-            border: 1px solid #ccc; /* Add a border around the calendar box */
-            resize: both; /* Enable resizing */
-            overflow: hidden; /* Allow content to be scrolled if needed */
-        }
-
-        /* Style the iframe inside the calendar container */
-        #outlook-calendar {
-            width: 100%; /* Adjust the width as needed */
-            height: 100%; /* Adjust the height as needed */
-            border: none; /* Remove iframe border */
-        }
-    </style>
+  <link rel="stylesheet" href="rooms.css">
+  <style>
+    /* ── Orange section override ── */
+    /* ── Orange section override ── */
+    :root { --btn-color: #FFA500; }
+  </style>
 </head>
 <body>
-    <a class="back-button" href="javascript:history.back()">Back</a>
-    <img src="Studio 227.jpg">
-    <div class="calendar-container">
-        <iframe id="outlook-calendar" src="https://outlook.office365.com/owa/calendar/21811853bdf94f4c8337499e8db9a4e3@eab.com/4ae2a911108143d2a2cd07c0866b106714756786999461082320/calendar.html" frameborder="0" scrolling="no"></iframe>
+
+  <a class="back-button" href="javascript:history.back()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to Map
+  </a>
+
+  <!-- Confirmation overlay -->
+  <div id="confirmOverlay">
+    <div class="confirm-box">
+      <h3>Confirm Booking</h3>
+      <p class="confirm-sub">Please review the details before confirming.</p>
+      <div class="confirm-detail">
+        <div class="confirm-row"><span>Room</span><span id="confirmRoom">—</span></div>
+        <div class="confirm-row"><span>Subject</span><span id="confirmSubject">—</span></div>
+        <div class="confirm-row"><span>Date</span><span id="confirmDate">—</span></div>
+        <div class="confirm-row"><span>Time</span><span id="confirmTime">—</span></div>
+      </div>
+      <div class="confirm-actions">
+        <button id="confirmCancel">Cancel</button>
+        <button id="confirmSubmit">Confirm Booking</button>
+      </div>
     </div>
+  </div>
+
+  <div class="page">
+
+    <!-- Left: room photo + info -->
+    <div class="photo-panel">
+      <img src="Studio%20227.jpg" alt="Studio 227">
+      <div class="room-info">
+
+        <h1 class="room-name">Studio 227</h1>
+        <div class="room-tag">West Broad · 2nd Floor</div>
+
+        <div class="room-meta">
+          <div class="meta-chip">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.2" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 10.5c0-2.485 2.015-4.5 4.5-4.5s4.5 2.015 4.5 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            1 person
+          </div>
+          <div class="meta-chip">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1.5" y="2.5" width="9" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M4 1.5v2M8 1.5v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Zoom Studio
+          </div>
+          <div class="meta-chip">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1.5" y="1.5" width="9" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M4 10.5h4M6 8.5v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            TV
+          </div>
+          <div class="meta-chip">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1.5" y="1.5" width="9" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M4 10.5h4M6 8.5v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Dual Monitors
+          </div>
+          <div class="meta-chip">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.3"/><path d="M6 4v2l1.5 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Dock
+          </div>
+          <div class="meta-chip">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="5" r="2" stroke="currentColor" stroke-width="1.3"/><path d="M3 5c0-1.657 1.343-3 3-3s3 1.343 3 3M2 9c0-1.5 1.5-2.5 4-2.5s4 1 4 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Webcam
+          </div>
+          <div class="meta-chip">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M6 1v1M6 10v1M1 6h1M10 6h1M2.5 2.5l.7.7M8.8 8.8l.7.7M9.5 2.5l-.7.7M3.2 8.8l-.7.7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Ring Light
+          </div>
+        </div>
+
+        <form class="booking-form" id="bookingForm">
+          <div class="form-full">
+            <label for="meetingSubject">Meeting Subject</label>
+            <input type="text" id="meetingSubject" placeholder="e.g. Team standup" required>
+          </div>
+          <div class="form-full">
+            <label for="meetingDate">Date</label>
+            <input type="date" id="meetingDate" required>
+          </div>
+          <div>
+            <label for="startTime">Start Time</label>
+            <input type="time" id="startTime" required>
+          </div>
+          <div>
+            <label for="endTime">End Time</label>
+            <input type="time" id="endTime" required>
+          </div>
+          <div id="bookingFeedback" class="form-full"></div>
+          <button type="submit">Book Room</button>
+        </form>
+
+      </div>
+    </div>
+
+    <!-- Right: calendar -->
+    <div class="calendar-panel">
+      <div class="calendar-header">
+        <div class="calendar-title">Room Calendar</div>
+        <div class="room-status-badge loading" id="roomStatusBadge">
+          <div class="status-badge-dot"></div>
+          <span id="roomStatusText">Checking status…</span>
+        </div>
+      </div>
+      <div class="calendar-scroll">
+        <iframe
+          src="https://outlook.office365.com/owa/calendar/21811853bdf94f4c8337499e8db9a4e3@eab.com/4ae2a911108143d2a2cd07c0866b106714756786999461082320/calendar.html"
+          scrolling="yes">
+        </iframe>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const apiBase = window.location.protocol === "file:" ? "http://localhost:3000" : "";
+
+    // Set room name in confirm box from page title
+    document.getElementById('confirmRoom').textContent = document.title;
+
+    // ── Live status badge ──
+    async function checkRoomStatus() {
+      const badge = document.getElementById("roomStatusBadge");
+      const text = document.getElementById("roomStatusText");
+      try {
+        const res = await fetch(`${apiBase}/checkCalendar`);
+        const data = await res.json();
+        const booked = !!data["ric_227@eab.com"];
+        badge.className = "room-status-badge " + (booked ? "booked" : "available");
+        text.textContent = booked ? "Currently Booked" : "Available Now";
+      } catch {
+        badge.className = "room-status-badge loading";
+        text.textContent = "Status unavailable";
+      }
+    }
+
+    checkRoomStatus();
+
+    // ── Booking form — show confirmation ──
+    let pendingFormData = null;
+
+    document.getElementById("bookingForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const subject = document.getElementById("meetingSubject").value;
+      const date = document.getElementById("meetingDate").value;
+      const start = document.getElementById("startTime").value;
+      const end = document.getElementById("endTime").value;
+
+      // Populate confirm box
+      document.getElementById("confirmSubject").textContent = subject;
+      document.getElementById("confirmDate").textContent = new Date(date + "T12:00:00").toLocaleDateString([], { weekday: "short", month: "short", day: "numeric", year: "numeric" });
+      document.getElementById("confirmTime").textContent = formatTime(start) + " – " + formatTime(end);
+
+      pendingFormData = {
+        userEmail: "ric_227@eab.com",
+        subject,
+        start: date + "T" + start + ":00",
+        end: date + "T" + end + ":00",
+        attendees: []
+      };
+
+      document.getElementById("confirmOverlay").classList.add("visible");
+    });
+
+    document.getElementById("confirmCancel").addEventListener("click", function () {
+      document.getElementById("confirmOverlay").classList.remove("visible");
+      pendingFormData = null;
+    });
+
+    document.getElementById("confirmSubmit").addEventListener("click", function () {
+      document.getElementById("confirmOverlay").classList.remove("visible");
+      submitBooking(pendingFormData);
+      pendingFormData = null;
+    });
+
+    function submitBooking(data) {
+      const feedback = document.getElementById("bookingFeedback");
+      const submitBtn = document.querySelector("#bookingForm button[type='submit']");
+
+      submitBtn.textContent = "Booking…";
+      submitBtn.style.opacity = "0.6";
+      submitBtn.style.pointerEvents = "none";
+
+      fetch(`${apiBase}/createEvent`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+      .then(res => {
+        if (!res.ok) throw new Error();
+        return res.json();
+      })
+      .then(() => {
+        feedback.textContent = "✓ Room booked successfully!";
+        feedback.className = "form-full visible success";
+        document.getElementById("bookingForm").reset();
+        checkRoomStatus();
+      })
+      .catch(() => {
+        feedback.textContent = "✕ Booking failed. Please try again.";
+        feedback.className = "form-full visible error";
+      })
+      .finally(() => {
+        submitBtn.textContent = "Book Room";
+        submitBtn.style.opacity = "";
+        submitBtn.style.pointerEvents = "";
+        setTimeout(() => { feedback.className = "form-full"; }, 5000);
+      });
+    }
+
+    function formatTime(t) {
+      const [h, m] = t.split(":").map(Number);
+      const ampm = h >= 12 ? "PM" : "AM";
+      return ((h % 12) || 12) + ":" + String(m).padStart(2, "0") + " " + ampm;
+    }
+  </script>
+
 </body>
 </html>
- 

@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cardinal 215</title>
+  <title>Tulip 253</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="rooms.css">
   <style>
-    /* ── Blue section override ── */
-    /* ── Orange section override ── */
-    :root { --btn-color: #FFA500; }
+    /* ── Yellow section override ── */
+    /* ── Yellow section override ── */
+    :root { --btn-color: #FFD700; }
   </style>
 </head>
 <body>
@@ -46,10 +46,10 @@
 
     <!-- Left: room photo + info -->
     <div class="photo-panel">
-      <img src="Cardinal%20215.jpg" alt="Cardinal 215">
+      <img src="Tulip%20253.jpg" alt="Tulip 253">
       <div class="room-info">
 
-        <h1 class="room-name">Cardinal 215</h1>
+        <h1 class="room-name">Tulip 253</h1>
         <div class="room-tag">West Broad · 2nd Floor</div>
 
         <div class="room-meta">
@@ -106,7 +106,7 @@
       </div>
       <div class="calendar-scroll">
         <iframe
-          src="https://outlook.office365.com/owa/calendar/0850ed9790db47be9ec798478111f509@eab.com/83c629fafc424195a4d48e56dc8a4c1b4455315664603293709/calendar.html"
+          src="PLACEHOLDER_CALENDAR_URL"
           scrolling="yes">
         </iframe>
       </div>
@@ -127,7 +127,7 @@
       try {
         const res = await fetch(`${apiBase}/checkCalendar`);
         const data = await res.json();
-        const booked = !!data["ric_215@eab.com"];
+        const booked = !!data["ric_253@eab.com"];
         badge.className = "room-status-badge " + (booked ? "booked" : "available");
         text.textContent = booked ? "Currently Booked" : "Available Now";
       } catch {
@@ -155,7 +155,7 @@
       document.getElementById("confirmTime").textContent = formatTime(start) + " – " + formatTime(end);
 
       pendingFormData = {
-        userEmail: "ric_215@eab.com",
+        userEmail: "ric_253@eab.com",
         subject,
         start: date + "T" + start + ":00",
         end: date + "T" + end + ":00",

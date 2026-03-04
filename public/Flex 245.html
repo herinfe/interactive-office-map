@@ -1,64 +1,113 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Flex 245</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow: auto;
-            position: relative; /* Make the body a positioning context for absolute positioning */
-        }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flex 245</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 
-        .back-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
-
-        .back-button:hover {
-            background-color: #0056b3;
-        }
-
-        img {
-            max-width: 100%; /* Adjust the width as needed */
-            height: auto;
-            display: block; /* Add this to center the image */
-        }
-
-        /* Style the container for the calendar */
-        .calendar-container {
-            position: absolute;
-            bottom: -610px; /* Adjust the bottom position as needed */
-            left: 20px; /* Adjust the left position as needed */
-            width: 1150px; /* Adjust the initial width as needed */
-            height: 600px; /* Adjust the initial height as needed */
-            border: 1px solid #ccc; /* Add a border around the calendar box */
-            resize: both; /* Enable resizing */
-            overflow: hidden; /* Allow content to be scrolled if needed */
-        }
-
-        /* Style the iframe inside the calendar container */
-        #outlook-calendar {
-            width: 100%; /* Adjust the width as needed */
-            height: 100%; /* Adjust the height as needed */
-            border: none; /* Remove iframe border */
-        }
-    </style>
+  <link rel="stylesheet" href="rooms.css">
+  <style>
+    /* ── Teal section override ── */
+    /* ── Teal section override ── */
+    :root { --btn-color: #008080; }
+  </style>
 </head>
 <body>
-    <a class="back-button" href="javascript:history.back()">Back</a>
-    <img src="Flex 245.jpg">
-    <div class="calendar-container">
-        <iframe id="outlook-calendar" src="https://outlook.office365.com/owa/calendar/e06e348a66f843f6b65d752329ec81f8@eab.com/73ef6211e2294855b3c7a68c4a3bc2de6133626581343499703/calendar.html" frameborder="0" scrolling="no"></iframe>
+
+  <a class="back-button" href="javascript:history.back()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to Map
+  </a>
+
+
+    <div class="page">
+
+    <!-- Left: room photo + info -->
+    <div class="photo-panel">
+      <img src="Flex%20245.jpg" alt="Flex 245">
+      <div class="room-info">
+
+        <h1 class="room-name">Flex 245</h1>
+        <div class="room-tag">West Broad · 2nd Floor</div>
+
+        <div class="room-meta">
+          <div class="meta-chip">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.2" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 10.5c0-2.485 2.015-4.5 4.5-4.5s4.5 2.015 4.5 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            First Come, First Served
+          </div>
+          <div class="meta-chip">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1.5" y="2.5" width="9" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M4 1.5v2M8 1.5v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Flex Office
+          </div>
+          <div class="meta-chip">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1.5" y="1.5" width="9" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M4 10.5h4M6 8.5v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Neat Bar
+          </div>
+          <div class="meta-chip">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1.5" y="1.5" width="9" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M4 10.5h4M6 8.5v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Dual Monitors
+          </div>
+          <div class="meta-chip">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.3"/><path d="M6 4v2l1.5 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Dock
+          </div>
+          <div class="meta-chip">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1.5" y="1.5" width="9" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M4 10.5h4M6 8.5v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            TV
+          </div>
+        </div>
+
+
+
+      </div>
     </div>
+
+    <!-- Right: calendar -->
+    <div class="calendar-panel">
+      <div class="calendar-header">
+        <div class="calendar-title">Room Calendar</div>
+        <div class="room-status-badge loading" id="roomStatusBadge">
+          <div class="status-badge-dot"></div>
+          <span id="roomStatusText">Checking status…</span>
+        </div>
+      </div>
+      <div class="calendar-scroll">
+        <iframe
+          src="https://outlook.office365.com/owa/calendar/e06e348a66f843f6b65d752329ec81f8@eab.com/73ef6211e2294855b3c7a68c4a3bc2de6133626581343499703/calendar.html"
+          scrolling="yes">
+        </iframe>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+  <script>
+    const apiBase = window.location.protocol === "file:" ? "http://localhost:3000" : "";
+
+    async function checkRoomStatus() {
+      const badge = document.getElementById("roomStatusBadge");
+      const text = document.getElementById("roomStatusText");
+      try {
+        const res = await fetch(`${apiBase}/checkCalendar`);
+        const data = await res.json();
+        const booked = data.hasOwnProperty("ric_245@eab.com") ? !!data["ric_245@eab.com"] : false;
+        badge.className = "room-status-badge " + (booked ? "booked" : "available");
+        text.textContent = booked ? "Currently Booked" : "Available Now";
+      } catch {
+        badge.className = "room-status-badge available";
+        text.textContent = "Available Now";
+      }
+    }
+
+    checkRoomStatus();
+  </script>
 </body>
 </html>
- 

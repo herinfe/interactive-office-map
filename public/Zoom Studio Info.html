@@ -1,39 +1,154 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Zoom Studio Info</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            position: relative;
-        }
-
-        .back-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
-
-        .back-button:hover {
-            background-color: #0056b3;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zoom Studio Info</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="rooms.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: "Lato", sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .back-button {
+      position: fixed;
+      top: clamp(10px, 1.2vw, 18px);
+      left: clamp(10px, 1.2vw, 18px);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: clamp(6px, 0.8vw, 10px) clamp(10px, 1.2vw, 16px);
+      background: rgba(17,17,17,0.85);
+      color: #fff;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: clamp(4px, 0.6vw, 10px);
+      font-family: "Lato", sans-serif;
+      font-size: clamp(11px, 1.2vw, 15px);
+      letter-spacing: 0.02em;
+      backdrop-filter: blur(10px);
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .back-button:hover {
+      border-color: rgba(255,255,255,0.3);
+      background: rgba(40,40,40,0.92);
+    }
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: clamp(32px, 5vw, 64px);
+      max-width: 680px;
+      width: 90%;
+      text-align: center;
+    }
+    .icon {
+      width: clamp(48px, 6vw, 72px);
+      height: clamp(48px, 6vw, 72px);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto clamp(20px, 3vw, 32px);
+      font-size: clamp(22px, 3vw, 32px);
+    }
+    h1 {
+      font-size: clamp(24px, 3.5vw, 42px);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 0 0 clamp(12px, 1.5vw, 20px);
+    }
+    p {
+      font-size: clamp(13px, 1.4vw, 17px);
+      line-height: 1.7;
+      color: rgba(255,255,255,0.7);
+      margin: 0 0 clamp(24px, 3vw, 40px);
+    }
+    p strong { color: #fff; }
+    .rules {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+    }
+    .rule {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: clamp(10px, 1.2vw, 16px) clamp(14px, 1.6vw, 20px);
+      font-size: clamp(12px, 1.2vw, 15px);
+      color: rgba(255,255,255,0.75);
+      line-height: 1.5;
+    }
+    .rule-icon { font-size: clamp(14px, 1.4vw, 18px); flex-shrink: 0; margin-top: 1px; }
+    .section-bar {
+      display: flex;
+      height: 4px;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: clamp(24px, 3vw, 40px);
+      gap: 4px;
+    }
+    .section-bar span { flex: 1; border-radius: 999px; }
+  </style>
 </head>
 <body>
-    <a class="back-button" href="javascript:history.back()">Back</a>
-    <img src="Zoom Studio Info.jpg">
+
+  <a class="back-button" href="javascript:history.back()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to Map
+  </a>
+
+  <div class="card">
+    <div class="icon">🎥</div>
+    <h1>Zoom Studios</h1>
+    <p>Zoom Studios are intended for <strong>partner-facing Zoom meetings</strong>. Reserve in advance through Outlook or via the tablet just outside the door — or drop in if the space isn't already reserved.</p>
+
+    <div class="rules">
+      <div class="rule">
+        <div class="rule-icon">📅</div>
+        <div>Book through <strong>Outlook</strong> by adding the studio as a resource in your meeting invite, or use the <strong>tablet outside the door</strong>.</div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">🚪</div>
+        <div>Feel free to <strong>drop in</strong> if the space is not already reserved — check the tablet or the map for current availability.</div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">⏱️</div>
+        <div>Please <strong>vacate promptly</strong> when your meeting ends — lingering reduces availability for others.</div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">🗺️</div>
+        <div>Click any <strong>studio on the map</strong> to check availability, view the calendar, and book directly from this tool.</div>
+      </div>
+    </div>
+
+    <div class="section-bar">
+      <span style="background:#FFA500;"></span>
+      <span style="background:#4A9EFF;"></span>
+      <span style="background:#FFD700;"></span>
+      <span style="background:#008080;"></span>
+    </div>
+  </div>
+
 </body>
 </html>
