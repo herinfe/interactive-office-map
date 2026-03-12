@@ -743,6 +743,15 @@
         setRect("result259", "ric_259@eab.com");
         setRect("result201", "ric_201@eab.com");
 
+        // Always mark permanent offices as red
+        ["result206","result212","result214","result243","result244","result245","result249"].forEach(id => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          el.style.stroke = "red";
+          el.style.strokeWidth = "5";
+          el.style.fill = "none";
+        });
+
         errorState.classList.remove("visible");
 
       } catch (error) {
