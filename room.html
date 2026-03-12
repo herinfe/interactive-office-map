@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Loading...</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="rooms.css">
+</head>
+<body>
+
+  <a class="back-button" href="javascript:history.back()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to Map
+  </a>
+
+  <!-- Confirmation overlay (only rendered for bookable rooms) -->
+  <div id="confirmOverlay">
+    <div class="confirm-box">
+      <h3>Confirm Booking</h3>
+      <p class="confirm-sub">Please review the details before confirming.</p>
+      <div class="confirm-detail">
+        <div class="confirm-row"><span>Room</span><span id="confirmRoom">—</span></div>
+        <div class="confirm-row"><span>Subject</span><span id="confirmSubject">—</span></div>
+        <div class="confirm-row"><span>Date</span><span id="confirmDate">—</span></div>
+        <div class="confirm-row"><span>Time</span><span id="confirmTime">—</span></div>
+      </div>
+      <div class="confirm-actions">
+        <button id="confirmCancel">Cancel</button>
+        <button id="confirmSubmit">Confirm Booking</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page">
+    <!-- Content injected by JS -->
+  </div>
+
+  <script>
+    const apiBase = window.location.protocol === "file:" ? "http://localhost:3000" : "";
+
+    // ── SVG icon templates ──
+    const ICONS = {
+      person: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.2" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 10.5c0-2.485 2.015-4.5 4.5-4.5s4.5 2.015 4.5 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>',
+      calendar: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1.5" y="2.5" width="9" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M4 1.5v2M8 1.5v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>',
+      screen: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1.5" y="1.5" width="9" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M4 10.5h4M6 8.5v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>',
+      clock: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.3"/><path d="M6 4v2l1.5 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>',
+      webcam: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="5" r="2" stroke="currentColor" stroke-width="1.3"/><path d="M3 5c0-1.657 1.343-3 3-3s3 1.343 3 3M2 9c0-1.5 1.5-2.5 4-2.5s4 1 4 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>',
+      ringlight: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M6 1v1M6 10v1M1 6h1M10 6h1M2.5 2.5l.7.7M8.8 8.8l.7.7M9.5 2.5l-.7.7M3.2 8.8l-.7.7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>',
+      whitenoise: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M4 4c0 0-2 1-2 2s2 2 2 2M8 4c0 0 2 1 2 2s-2 2-2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>',
+      printer: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1.5" y="2" width="9" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M4 2V1M8 2V1M3 9v2h6V9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>',
+      document: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="1.5" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M4 4h4M4 6h4M4 8h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>',
+      shredder: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 2h6l-1 8H4L3 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M2 2h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>',
+      supplies: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1.5" y="3" width="9" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M4 3V2a2 2 0 014 0v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>',
+      wellness: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2C4 2 2.5 3.5 2.5 5.5c0 2.5 3.5 5 3.5 5s3.5-2.5 3.5-5C9.5 3.5 8 2 6 2z" stroke="currentColor" stroke-width="1.3"/></svg>'
+    };
+
+    // Map equipment names to icons
+    function iconForEquipment(name) {
+      const lower = name.toLowerCase();
+      if (lower.includes("webcam")) return ICONS.webcam;
+      if (lower.includes("ring light")) return ICONS.ringlight;
+      if (lower.includes("dock")) return ICONS.clock;
+      if (lower.includes("white noise")) return ICONS.whitenoise;
+      if (lower.includes("printer")) return ICONS.printer;
+      if (lower.includes("laminator")) return ICONS.document;
+      if (lower.includes("shredder")) return ICONS.shredder;
+      if (lower.includes("supplies")) return ICONS.supplies;
+      if (lower.includes("wellness")) return ICONS.wellness;
+      return ICONS.screen; // default for TV, monitors, Neat Bar, display, etc.
+    }
+
+    // Map room type to a label chip
+    function typeLabel(room) {
+      const labels = {
+        flex: "Flex Office",
+        studio: "Zoom Studio",
+        huddle: "Bookable",
+        conference: "Bookable",
+        phone: "Phone Room",
+        wellness: "Wellness Room",
+        utility: "Utility",
+        collab: "Open Collab",
+        common: "Common Area"
+      };
+      return labels[room.type] || room.type;
+    }
+
+    function formatTime(t) {
+      const [h, m] = t.split(":").map(Number);
+      const ampm = h >= 12 ? "PM" : "AM";
+      return ((h % 12) || 12) + ":" + String(m).padStart(2, "0") + " " + ampm;
+    }
+
+    // ── Build the page ──
+    async function init() {
+      const params = new URLSearchParams(window.location.search);
+      const roomId = params.get("id");
+
+      if (!roomId) {
+        document.getElementById("page").innerHTML = '<div style="color:#fff;padding:40px;">No room ID specified.</div>';
+        return;
+      }
+
+      // Load room data
+      let data;
+      try {
+        const res = await fetch("rooms.json");
+        data = await res.json();
+      } catch (e) {
+        document.getElementById("page").innerHTML = '<div style="color:#fff;padding:40px;">Failed to load room data.</div>';
+        return;
+      }
+
+      const room = data.rooms.find(r => r.id === roomId);
+      if (!room) {
+        document.getElementById("page").innerHTML = '<div style="color:#fff;padding:40px;">Room "' + roomId + '" not found.</div>';
+        return;
+      }
+
+      const section = data.sections[room.section];
+
+      // Set page title and section color
+      document.title = room.name;
+      document.documentElement.style.setProperty("--btn-color", section.color);
+
+      const hasCalendar = !!room.calendarUrl && room.calendarUrl !== "PLACEHOLDER_CALENDAR_URL";
+      const isBookable = room.bookable;
+      const hasStatus = !!room.email;
+
+      // ── Determine layout ──
+      // Simple layout (photo only, no calendar panel): non-bookable rooms with no calendar
+      const simpleLayout = !hasCalendar && !isBookable;
+
+      // Build equipment chips
+      const chipsHtml = buildChips(room);
+
+      if (simpleLayout) {
+        // ── Simple layout: full-width photo panel ──
+        document.getElementById("page").innerHTML = `
+          <div class="photo-panel" style="grid-column: 1 / -1;">
+            <img src="${encodeURI(room.image)}" alt="${room.name}">
+            <div class="room-info">
+              <h1 class="room-name">${room.name}</h1>
+              <div class="room-tag">West Broad · 2nd Floor</div>
+              ${chipsHtml ? '<div class="room-meta">' + chipsHtml + '</div>' : ''}
+            </div>
+          </div>
+        `;
+        // No status check, no booking form, no calendar
+        return;
+      }
+
+      // ── Full layout: photo + info on left, calendar on right ──
+      let leftContent = `
+        <img src="${encodeURI(room.image)}" alt="${room.name}">
+        <div class="room-info">
+          <h1 class="room-name">${room.name}</h1>
+          <div class="room-tag">West Broad · 2nd Floor</div>
+          ${chipsHtml ? '<div class="room-meta">' + chipsHtml + '</div>' : ''}
+          ${isBookable ? buildBookingForm() : ''}
+        </div>
+      `;
+
+      let rightContent = `
+        <div class="calendar-header">
+          <div class="calendar-title">Room Calendar</div>
+          ${hasStatus ? `
+          <div class="room-status-badge loading" id="roomStatusBadge">
+            <div class="status-badge-dot"></div>
+            <span id="roomStatusText">Checking status…</span>
+          </div>
+          ` : ''}
+        </div>
+        <div class="calendar-scroll">
+          ${hasCalendar ? `<iframe src="${room.calendarUrl}" scrolling="yes"></iframe>` : '<div style="padding:40px;color:#aaa;">No calendar available for this room.</div>'}
+        </div>
+      `;
+
+      document.getElementById("page").innerHTML = `
+        <div class="photo-panel">${leftContent}</div>
+        <div class="calendar-panel">${rightContent}</div>
+      `;
+
+      // Set confirm room name
+      const confirmRoomEl = document.getElementById("confirmRoom");
+      if (confirmRoomEl) confirmRoomEl.textContent = room.name;
+
+      // ── Live status ──
+      if (hasStatus) {
+        checkRoomStatus(room.email);
+      }
+
+      // ── Booking form logic ──
+      if (isBookable) {
+        setupBookingForm(room);
+      }
+    }
+
+    function buildChips(room) {
+      let chips = '';
+
+      // Capacity chip
+      if (room.capacity) {
+        chips += `<div class="meta-chip">${ICONS.person} ${room.capacity}</div>`;
+      }
+
+      // Type chip
+      chips += `<div class="meta-chip">${ICONS.calendar} ${typeLabel(room)}</div>`;
+
+      // Equipment chips
+      room.equipment.forEach(eq => {
+        chips += `<div class="meta-chip">${iconForEquipment(eq)} ${eq}</div>`;
+      });
+
+      return chips;
+    }
+
+    function buildBookingForm() {
+      return `
+        <form class="booking-form" id="bookingForm">
+          <div class="form-full">
+            <label for="meetingSubject">Meeting Subject</label>
+            <input type="text" id="meetingSubject" placeholder="e.g. Team standup" required>
+          </div>
+          <div class="form-full">
+            <label for="meetingDate">Date</label>
+            <input type="date" id="meetingDate" required>
+          </div>
+          <div>
+            <label for="startTime">Start Time</label>
+            <input type="time" id="startTime" required>
+          </div>
+          <div>
+            <label for="endTime">End Time</label>
+            <input type="time" id="endTime" required>
+          </div>
+          <div id="bookingFeedback" class="form-full"></div>
+          <button type="submit">Book Room</button>
+        </form>
+      `;
+    }
+
+    // ── Status check ──
+    async function checkRoomStatus(email) {
+      const badge = document.getElementById("roomStatusBadge");
+      const text = document.getElementById("roomStatusText");
+      if (!badge || !text) return;
+      try {
+        const res = await fetch(`${apiBase}/checkCalendar`);
+        const data = await res.json();
+        const booked = !!data[email];
+        badge.className = "room-status-badge " + (booked ? "booked" : "available");
+        text.textContent = booked ? "Currently Booked" : "Available Now";
+      } catch {
+        badge.className = "room-status-badge loading";
+        text.textContent = "Status unavailable";
+      }
+    }
+
+    // ── Booking form wiring ──
+    function setupBookingForm(room) {
+      let pendingFormData = null;
+      const form = document.getElementById("bookingForm");
+      if (!form) return;
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const subject = document.getElementById("meetingSubject").value;
+        const date = document.getElementById("meetingDate").value;
+        const start = document.getElementById("startTime").value;
+        const end = document.getElementById("endTime").value;
+
+        // Validation: end must be after start
+        if (end <= start) {
+          const fb = document.getElementById("bookingFeedback");
+          fb.textContent = "End time must be after start time.";
+          fb.className = "form-full visible error";
+          setTimeout(() => { fb.className = "form-full"; }, 4000);
+          return;
+        }
+
+        // Validation: date must not be in the past
+        const today = new Date().toISOString().split("T")[0];
+        if (date < today) {
+          const fb = document.getElementById("bookingFeedback");
+          fb.textContent = "Date cannot be in the past.";
+          fb.className = "form-full visible error";
+          setTimeout(() => { fb.className = "form-full"; }, 4000);
+          return;
+        }
+
+        // Populate confirm box
+        document.getElementById("confirmSubject").textContent = subject;
+        document.getElementById("confirmDate").textContent = new Date(date + "T12:00:00").toLocaleDateString([], { weekday: "short", month: "short", day: "numeric", year: "numeric" });
+        document.getElementById("confirmTime").textContent = formatTime(start) + " \u2013 " + formatTime(end);
+
+        pendingFormData = {
+          userEmail: room.email,
+          subject,
+          start: date + "T" + start + ":00",
+          end: date + "T" + end + ":00",
+          attendees: []
+        };
+
+        document.getElementById("confirmOverlay").classList.add("visible");
+      });
+
+      document.getElementById("confirmCancel").addEventListener("click", function () {
+        document.getElementById("confirmOverlay").classList.remove("visible");
+        pendingFormData = null;
+      });
+
+      document.getElementById("confirmSubmit").addEventListener("click", function () {
+        document.getElementById("confirmOverlay").classList.remove("visible");
+        if (pendingFormData) {
+          submitBooking(pendingFormData, room.email);
+          pendingFormData = null;
+        }
+      });
+    }
+
+    function submitBooking(data, email) {
+      const feedback = document.getElementById("bookingFeedback");
+      const submitBtn = document.querySelector("#bookingForm button[type='submit']");
+
+      submitBtn.textContent = "Booking\u2026";
+      submitBtn.style.opacity = "0.6";
+      submitBtn.style.pointerEvents = "none";
+
+      fetch(`${apiBase}/createEvent`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+      .then(res => {
+        if (!res.ok) throw new Error();
+        return res.json();
+      })
+      .then(() => {
+        feedback.textContent = "\u2713 Room booked successfully!";
+        feedback.className = "form-full visible success";
+        document.getElementById("bookingForm").reset();
+        checkRoomStatus(email);
+      })
+      .catch(() => {
+        feedback.textContent = "\u2715 Booking failed. Please try again.";
+        feedback.className = "form-full visible error";
+      })
+      .finally(() => {
+        submitBtn.textContent = "Book Room";
+        submitBtn.style.opacity = "";
+        submitBtn.style.pointerEvents = "";
+        setTimeout(() => { feedback.className = "form-full"; }, 5000);
+      });
+    }
+
+    // Go
+    init();
+  </script>
+
+</body>
+</html>
